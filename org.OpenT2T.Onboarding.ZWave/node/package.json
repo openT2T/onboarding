@@ -1,0 +1,18 @@
+{
+    "name": "opent2t-onboarding-zwave",
+    "version": "1.0.1",
+    "dependencies": {
+        "openzwave-shared": "~1.1.7"
+    },
+    "description": "Sample ZWave onboarding module for Open Translators to Things",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/openT2T/onboarding.git"
+    },
+    "author": "Open Translators to Things",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/openT2T/onboarding/issues"
+    },
+    "homepage": "https://github.com/openT2T/onboarding#readme"
+}

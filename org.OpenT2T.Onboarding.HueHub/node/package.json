@@ -1,0 +1,23 @@
+{
+    "name": "opent2t-onboarding-huehub",
+    "version": "1.0.1",
+    "dependencies": {
+        "node-hue-api": "2.2.0",
+        "readline": "1.01",
+        "inquirer": "^0.12.0"
+    },
+    "devDependencies": {
+        "optimist": "0.6.1"	
+    },
+    "description": "Sample Philips Hue onboarding module for Open Translators to Things",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/openT2T/onboarding.git"
+    },
+    "author": "Open Translators to Things",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/openT2T/onboarding/issues"
+    },
+    "homepage": "https://github.com/openT2T/onboarding#readme"
+}

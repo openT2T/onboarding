@@ -1,0 +1,21 @@
+{
+    "name": "opent2t-onboarding-bluetoothle",
+    "version": "1.0.1",
+    "dependencies": {
+        "noble": "~1.3.0"
+    },
+    "devDependencies": {
+        "optimist": "0.6.1"
+    },
+    "description": "Sample Bluetooth LE onboarding module for Open Translators to Things",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/openT2T/onboarding.git"
+    },
+    "author": "Open Translators to Things",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/openT2T/onboarding/issues"
+    },
+    "homepage": "https://github.com/openT2T/onboarding#readme"
+}
