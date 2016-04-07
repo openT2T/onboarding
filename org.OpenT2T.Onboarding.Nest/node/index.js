@@ -11,7 +11,8 @@ var https = require('follow-redirects').https;
 var config = {
     port: process.env.PORT || 8080,
     code_uri: 'https://home.nest.com',
-    access_token_uri: 'api.home.nest.com'
+    access_token_uri: 'api.home.nest.com',
+    data_model_uri: 'developer-api.nest.com'
 }
 
 // module exports, implementing the schema
@@ -71,23 +72,23 @@ module.exports = {
 
                 // Swap authorization code for access token
                 var options = {
-                    "method": "POST",
-                    "hostname": "api.home.nest.com",
-                    "port": null,
-                    "path": "/oauth2/access_token?" + params,
-                    "headers": {
-                        "cache-control": "no-cache"
+                    'method': 'POST',
+                    'hostname': config.access_token_uri,
+                    'port': null,
+                    'path': '/oauth2/access_token?' + params,
+                    'headers': {
+                        'cache-control': 'no-cache'
                     }
                 };
 
                 var postReq = https.request(options, function(postRes) {
                     var chunks = [];
 
-                    postRes.on("data", function(chunk) {
+                    postRes.on('data', function(chunk) {
                         chunks.push(chunk);
                     });
 
-                    postRes.on("end", function() {
+                    postRes.on('end', function() {
                         var body = Buffer.concat(chunks);
 
                         if (postRes.statusCode != 200) {
@@ -106,7 +107,7 @@ module.exports = {
 
                             var getOptions = {
                                 protocol: 'https:',
-                                host: 'developer-api.nest.com',
+                                host: config.data_model_uri,
                                 path: '/devices/' + deviceTypeFilter,
                                 headers: {
                                     'Authorization': 'Bearer ' + accessToken.access_token
@@ -136,15 +137,15 @@ module.exports = {
                                         if (!!devices && deviceIds.length > 0) {
 
                                             var deviceChoices = deviceIds.map(function(deviceId) {
-                                                return devices[deviceId].name + ' (' + devices[deviceId].device_id  + ')';
+                                                return devices[deviceId].name + ' (' + devices[deviceId].device_id + ')';
                                             });
 
                                             // ask the user to select a device
                                             inquirer.prompt([
                                                 {
-                                                    type: "list",
-                                                    name: "selectedDevice",
-                                                    message: "Which device do you want to onboard?",
+                                                    type: 'list',
+                                                    name: 'selectedDevice',
+                                                    message: 'Which device do you want to onboard?',
                                                     choices: deviceChoices
                                                 }
                                             ], function(answers) {
