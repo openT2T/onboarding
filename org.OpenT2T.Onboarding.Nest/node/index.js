@@ -136,7 +136,7 @@ module.exports = {
                                         if (!!devices && deviceIds.length > 0) {
 
                                             var deviceChoices = deviceIds.map(function(deviceId) {
-                                                return devices[deviceId].name + ' (' + deviceId + ')';
+                                                return devices[deviceId].name + ' (' + devices[deviceId].device_id  + ')';
                                             });
 
                                             // ask the user to select a device
@@ -153,7 +153,7 @@ module.exports = {
                                                 var deviceId = d.substring(d.lastIndexOf('(') + 1, d.lastIndexOf(')'));
 
                                                 if (successCallback) {
-                                                    successCallback(accessToken.access_token, deviceId, accessToken.expires_in, 'All done. Happy coding!');
+                                                    successCallback(accessToken.access_token, accessToken.expires_in, deviceId, 'All done. Happy coding!');
                                                     return;
                                                 }
                                             });

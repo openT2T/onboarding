@@ -9,7 +9,7 @@ var argv = require('optimist')
 // register success and error callbacks for testing purposes (these are normally populated by the runtime)    
 function onSuccess(access_token, expires_in, device_id, message) {
     console.log('  access_token : ' + access_token);
-    console.log('  expires_in   : ' + access_token);
+    console.log('  expires_in   : ' + expires_in);
     console.log('  device_id    : ' + device_id);
     console.log('  message      : ' + message);
 
