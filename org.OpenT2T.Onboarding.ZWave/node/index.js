@@ -1,18 +1,27 @@
 'use strict';
 
 var OpenZWave = require('openzwave-shared');
+var inquirer = require('inquirer');
+var os = require('os');
 
 
 // module exports, implementing the schema
 module.exports = {
 
-    onboard: function(name, zwaveCommunicationChannel, manufacturerNameFilter, deviceClassId, successCallback, errorCallback) {
+    onboard: function(name, zwaveStickPort, manufacturerNameFilter, deviceClassId, successCallback, errorCallback) {
+        var zwavedriverroot = {
+            "darwin": '/dev/',
+            "linux": '/dev/',
+            "win32": '\\\\.\\'
+        }
+        var zwaveCommunicationChannel = zwavedriverroot[os.platform()] + zwaveStickPort;
+
         console.log('Onboarding device            : ' + name);
         console.log('ZWave communication channel  : ' + zwaveCommunicationChannel);
         console.log('manufacturerNameFilter       : ' + manufacturerNameFilter);
         console.log('deviceClassId                : ' + deviceClassId);
 
-        var manufacturerNameRegEx = new RegExp(manufacturerNameFilter);
+        var manufacturerNameRegEx = manufacturerNameFilter ? new RegExp(manufacturerNameFilter) : null;
 
         var zwave = new OpenZWave({
             ConsoleOutput: false,
@@ -104,28 +113,56 @@ module.exports = {
         var addressList = [];
 
         zwave.on('scan complete', function() {
+            var deviceChoices = [];
             for (var index = 0; index < nodes.length; index++) {
                 var n = nodes[index];
                 if (typeof (n) !== 'undefined') {
-                    if (manufacturerNameRegEx.test(n.manufacturer)) {
-                        if (typeof (n.classes[deviceClassId]) !== 'undefined') {
-                            var address = "{\"homeId\":" + hub_homeid + ",\"nodeId\":" + index + "}";
-                            addressList.push(address);
+                    if (!manufacturerNameRegEx || manufacturerNameRegEx.test(n.manufacturer)) {
+                        if (!deviceClassId || typeof (n.classes[deviceClassId]) !== 'undefined') {
+                            deviceChoices.push('Manufacturer: ' + n.manufacturer +
+                                                ', Product: ' + n.product +
+                                                ', NodeId(' + index + ')');
                         }
                     }
                 }
             }
 
-            if (successCallback) {
-                if (addressList.length > 0) {
-                    successCallback(addressList, 'ZWave device(s) found');
-                } else {
-                    errorCallback('NotFound', 'No ZWave devices found')
+            if (deviceChoices.length > 0) {
+                // ask the user to select a device
+                // Note: list prompt does not work on Windows 10 unless we first have another question
+                // So there is an additional prompt to hit enter key.
+                inquirer.prompt([
+                    {
+                        type: "input",
+                        name: "ok",
+                        message: "Found devices. Hit enter to select device"
+                    },
+                    {
+                        type: "list",
+                        name: "selectedDevice",
+                        message: "Which device do you want to onboard?",
+                        choices: deviceChoices,
+                        default: true
+                    }
+                ], function(answers) {
+                    // all done. Now we have both parameters we needed.
+                    var d = answers.selectedDevice;
+                    var nodeId = d.substring(d.lastIndexOf('(') + 1, d.lastIndexOf(')'));
+                    var address = "{\"homeId\":" + hub_homeid + ",\"nodeId\":" + nodeId + "}";
+
+                    if (successCallback) {
+                        successCallback(address, 'ZWave device(s) found');
+                        return;
+                    }
+                });
+            } else {
+                if (errorCallback) {
+                    errorCallback('NotFound', 'No ZWave devices found');
+                    return;
                 }
             }
         });
 
-        // on windows this will look like '\\.\COM3'
         zwave.connect(zwaveCommunicationChannel);
     }
 };
