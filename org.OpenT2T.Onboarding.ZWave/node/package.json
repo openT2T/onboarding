@@ -2,7 +2,11 @@
     "name": "opent2t-onboarding-zwave",
     "version": "1.0.1",
     "dependencies": {
-        "openzwave-shared": "~1.1.7"
+        "openzwave-shared": "~1.1.7",
+        "inquirer": "^0.12.0"
+    },
+    "devDependencies": {
+        "optimist": "0.6.1"
     },
     "description": "Sample ZWave onboarding module for Open Translators to Things",
     "repository": {
