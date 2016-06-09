@@ -1,11 +1,11 @@
 var huehub = require('./index');
 
 var argv = require('optimist')
-    .usage('Usage: $0 -n [name]')
-    .demand(['n'])
+    .usage('Usage: $0 -n [lamp name] -u [user id]')
+    .default({ n : '', u : '' })
     .argv;
 
-// register success and error callbacks for testing purposes (these are normally populated by the runtime)    
+// register success and error callbacks for testing purposes (these are normally populated by the runtime)
 function onSuccess(ipAddress, userId, uniqueId, message) {
     console.log("  ipAddress : " + ipAddress);
     console.log("  userId    : " + userId);
@@ -21,5 +21,5 @@ function onError(type, message) {
 };
 
 // Call onboarding with provided parameters (this is normally called by the runtime when the user initiates onboarding)
-huehub.onboard(argv.n, onSuccess, onError);
-	
+huehub.onboard(argv.n, argv.u, onSuccess, onError);
+
