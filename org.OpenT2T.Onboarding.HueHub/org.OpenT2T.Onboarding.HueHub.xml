@@ -7,13 +7,24 @@
              These input parameters are unique to a particular device type that supports this onboarding type,
              e.g. auth URLs, RF bands, regular expressions to find the device on a common bus, etc. -->
         <method name="onboard">
-            <arg name="name" type="s" direction="in" />
+            <arg name="name" type="s" direction="in">
+                <description>
+                    Optional regex filter on the lamp names. If unspecified, or if more than
+                    one lamp matches the filter, the user will be asked to choose a lamp.
+                </description>
+            </arg>
+            <arg name="userId" type="s" direction="in">
+                <description>
+                    Optional user ID for access to the Hue bridge. If unspecified, the user will
+                    be prompted to press the button on the hub to enable creation of a new user ID.
+                </description>
+            </arg>
         </method>
         <!-- Defines the metadata returned by onboarding. This is converted to the props array on the device
              object, which is passed in to translators that implement this onboarding type at runtime. -->
         <signal name="success">
             <arg name="ipAddress" type="s" direction="in" />
-            <arg name="userId" type="s" direction="in" />            
+            <arg name="userId" type="s" direction="in" />
             <arg name="uniqueId" type="s" direction="in" />
             <arg name="message" type="s" direction="in" />
         </signal>
