@@ -54,7 +54,7 @@ module.exports = {
                 }
             },
             {
-                type: 'input',
+                type: 'password',
                 name: 'password',
                 message: 'Wink Password (create this in the Wink app): ',
                 validate: function(value) {
