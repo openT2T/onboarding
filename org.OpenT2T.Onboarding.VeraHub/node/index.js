@@ -2,29 +2,7 @@
 
 var https = require('https');
 var inquirer = require('inquirer');
-
 var hubDevice = require('./hub.js');
-
-function handleError(errorCallback, error)
-{
-    console.log("[VeraHub] Error!");
-    if (error.statusMessage)
-    {
-        console.log(error.statusCode);
-        console.log(error.statusMessage);
-        console.log(error.headers);
-    }
-    else
-    {
-        console.log(error);
-    }
-
-    if (errorCallback)
-    {
-        errorCallback('Error', error);
-        return;
-    }
-}
 
 function handleDevices(hubInfo, deviceTypeFilter, successCallback) 
 {
@@ -91,14 +69,15 @@ module.exports = {
         inquirer.prompt(hubDevice.inputNeeded, function(answers) {
             console.log('\nThanks! Signing you in to Vera.');
 
-            var promise = hubDevice.connect(answers, errorCallback);
-            promise.then(function (){
+            hubDevice.connect(answers, errorCallback).then(function (){
                 handleDevices(hubDevice.hubInfo, deviceTypeFilter, successCallback); 
             },
-            function (error)
-            {
-                console.log("errror");
+            function (error) {
                 console.log(error);
+                
+                if (errorCallback) {
+                    errorCallback('Error', error);
+                }
             });
         });
     }

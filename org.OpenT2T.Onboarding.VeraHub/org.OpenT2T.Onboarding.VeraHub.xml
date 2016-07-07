@@ -14,7 +14,7 @@
         <signal name="success">
             <arg name="session_token" type="s" direction="in" />
             <arg name="relay_server" type="s" direction="in" />
-            <arg name="id" type="s" direction="in" />
+            <arg name="device_id" type="s" direction="in" />
             <arg name="message" type="s" direction="in" />
         </signal>
         <!-- Called when there is an error during onboarding -->

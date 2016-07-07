@@ -5,5 +5,17 @@ Sample [Vera Hub](http://www.getvera.com/) onboarding module for Open Translator
 See schema definition for inputs to the onboarding method, and outputs via success and error callbacks.
 
 ## Sample usage (via test.js script)
-Lights: node test -f 'Dimmable'
+Dimmable Lights: node test -f 'Dimmable'
+Lights Switct: node test -f 'BinaryLight'
 
+-f defines the filter for the device type field.  Vera uses upnp type formats like the following:
+
+"urn:schemas-upnp-org:device:DimmableLight:1" 
+"urn:schemas-upnp-org:device:BinaryLight:1"
+
+You can specify any part of the above as an option:
+Dimmable
+Light
+DimmableLight
+
+'All' is a special value which provides no filtering and will return all the devices.

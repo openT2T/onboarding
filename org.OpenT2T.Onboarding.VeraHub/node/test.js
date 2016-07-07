@@ -6,13 +6,13 @@ var argv = require('optimist')
     .argv;
 
 // register success and error callbacks for testing purposes (these are normally populated by the runtime)    
-function onSuccess(sessionToken, relayServer, id, message) {
+function onSuccess(sessionToken, relayServer, deviceId, message) {
     console.log("  sessionToken : " + sessionToken);
     console.log("  relayServer  : " + relayServer);
-    console.log("  id           : " + id);
+    console.log("  deviceId     : " + deviceId);
     console.log("  message      : " + message);
     
-    //process.exit();
+    process.exit();
 };
 
 function onError(type, message) {
