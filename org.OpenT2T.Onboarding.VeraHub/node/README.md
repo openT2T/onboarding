@@ -6,7 +6,7 @@ See schema definition for inputs to the onboarding method, and outputs via succe
 
 ## Sample usage (via test.js script)
 Dimmable Lights: node test -f 'Dimmable'
-Lights Switct: node test -f 'BinaryLight'
+Lights Switch: node test -f 'BinaryLight'
 
 -f defines the filter for the device type field.  Vera uses upnp type formats like the following:
 
