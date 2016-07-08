@@ -42,7 +42,7 @@ function handleDevices(hubInfo, deviceTypeFilter, successCallback)
             var deviceId = d.substring(d.lastIndexOf('(') + 1, d.lastIndexOf(')'));
 
             if (successCallback) {
-                successCallback(hubDevice.sessionToken, hubDevice.relayServer, deviceId, 'All done, happy coding!');
+                successCallback(hubDevice.relaySessionToken, hubDevice.relayServer, deviceId, 'All done, happy coding!');
                 return;
             }
         });
