@@ -10,16 +10,14 @@ function handleDevices(hubInfo, deviceTypeFilter, successCallback)
 
     var devices = hubInfo.devices; 
 
-    if (deviceTypeFilter !== "All")
-    {
+    if (deviceTypeFilter !== "All") {
         // apply the id key filter (only show devices that have this id key)
         devices = devices.filter(function(device) {
             return device.device_type.indexOf(deviceTypeFilter) > 0;
         });
     }
 
-    if (deviceTypeFilter === "All")
-    {
+    if (deviceTypeFilter === "All") {
         hubDevice.printDevices(devices);
     }
 
@@ -47,8 +45,7 @@ function handleDevices(hubInfo, deviceTypeFilter, successCallback)
             }
         });
     }
-    else
-    {
+    else {
         if (errorCallback) {
             errorCallback('NotFound', 'No devices found.');
             return;
@@ -69,12 +66,10 @@ module.exports = {
         inquirer.prompt(hubDevice.inputNeeded, function(answers) {
             console.log('\nThanks! Signing you in to Vera.');
 
-            hubDevice.connect(answers, errorCallback).then(function (){
+            hubDevice.connect(answers).then(function () {
                 handleDevices(hubDevice.hubInfo, deviceTypeFilter, successCallback); 
             },
             function (error) {
-                console.log(error);
-                
                 if (errorCallback) {
                     errorCallback('Error', error);
                 }

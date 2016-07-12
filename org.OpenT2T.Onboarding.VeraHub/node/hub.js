@@ -4,24 +4,18 @@ var https = require('https');
 var cryptojs_sha1 = require('crypto-js');
 var q = require('q');
 
-function handleError(errorCallback, error)
+function logError(error)
 {
     console.log("[VeraHub] Error!");
     if (error.statusMessage)
     {
-        console.log(error.statusCode);
-        console.log(error.statusMessage);
+        console.log("[VeraHub] HTTP Error: " + error.statusCode + " - " + error.statusMessage);
+        console.log("[VeraHub] HTTP Headers: ");
         console.log(error.headers);
     }
     else
     {
         console.log(error);
-    }
-
-    if (errorCallback)
-    {
-        errorCallback('Error', error);
-        return;
     }
 }
 
@@ -47,21 +41,11 @@ var internal =
     {
         var path = '/autha/auth/username/' + this.username + '?SHA1Password=' + this.sha1Password + '&PK_Oem=1';
         
-        var deferred = q.defer();
-        var myRef = this;
-        var promise = this.makeVeraRequest(this.veraAccountUrl, path, false, false, false);
-        promise.then(function (data)
-            {
-                myRef.mmsInfo = data;
-                deferred.resolve(data);
-            },
-            function (error) {
-                console.log(error);
-                deferred.reject(error);
-            }
-        );
-
-         return deferred.promise;
+        return this.makeVeraRequest(this.veraAccountUrl, path, false, false, false)
+            .then((data) => {
+                this.mmsInfo = data;
+                return data;
+            });
     },
 
     getDeviceInfo : function (url, sessionToken, pkDevice)
@@ -210,69 +194,45 @@ module.exports =
     pkDevice: undefined,
 
     // authorizes to the server based on the properties saved in the object 
-    authorize: function(errorCallback) {
-        var deferred = q.defer();
-
-        var myRef = this;
-
+    authorize: function() {
         // get initial set of authorization info, including account server
-        internal.getMmsAuthInfo().then(function(mmsInfo) {
-
+        return internal.getMmsAuthInfo().then((mmsInfo) => {
             // get account server session token
-            internal.getSessionToken(mmsInfo.Server_Account).then(function(accountSessionToken) {
+            return internal.getSessionToken(mmsInfo.Server_Account).then((accountSessionToken) => {
 
                 // get info for the hub/device on the account, including relay server
-                internal.getDeviceInfo(mmsInfo.Server_Account, accountSessionToken, internal.pkDevice).then(function (deviceInfo) {
+                return internal.getDeviceInfo(mmsInfo.Server_Account, accountSessionToken, internal.pkDevice).then((deviceInfo) => {
 
                     // get relay server session token
-                    internal.getSessionToken(deviceInfo.Server_Relay, mmsInfo).then(function (relaySessionToken) {
+                    return internal.getSessionToken(deviceInfo.Server_Relay, mmsInfo).then((relaySessionToken) => {
 
                         // get hubs info, vera calls this user_data
-                        internal.getUserData(deviceInfo.Server_Relay, relaySessionToken, internal.pkDevice).then(function(hubInfo) {
-                            myRef.relaySessionToken = relaySessionToken;
-                            myRef.relayServer = deviceInfo.Server_Relay;
-                            myRef.pkDevice = internal.pkDevice;
-                            myRef.hubInfo = hubInfo;
-                            myRef.devices = hubInfo.devices;
-                            deferred.resolve();
-                        },
-                        function (error) { 
-                            handleError(errorCallback, error); 
-                            deferred.reject(error); 
+                        return internal.getUserData(deviceInfo.Server_Relay, relaySessionToken, internal.pkDevice).then((hubInfo) => {
+                            this.relaySessionToken = relaySessionToken;
+                            this.relayServer = deviceInfo.Server_Relay;
+                            this.pkDevice = internal.pkDevice;
+                            this.hubInfo = hubInfo;
+                            this.devices = hubInfo.devices;
+                            return hubInfo;
                         })        
-                    },
-                    function (error) { 
-                        handleError(errorCallback, error);
-                        deferred.reject(error); 
                     })
-                },
-                function (error) { 
-                    handleError(errorCallback, error);
-                    deferred.reject(error); 
                 })
-            },
-            function (error) { 
-                handleError(errorCallback, error);
-                deferred.reject(error); 
             })
         },
         function (error) { 
-            handleError(errorCallback, error);
-            deferred.reject(error); 
+            throw error;
         });
-
-        return deferred.promise;
     },
 
     // connects to the hub based on the answers provided
-    connect : function(answers, errorCallback)
+    connect : function(answers)
     {
         var deferred = q.defer();
 
         if (!answers.pkDevice && !answers.username && ! answers.password)
         {
-            handleError(errorCallback, "Invalid input");
-            setTimeout(function () { deferred.reject("Invalid input"); }, 1000);
+            logError("Invalid input");
+            setTimeout(function () { deferred.reject("Invalid input"); }, 100);
         }
         else
         {   
@@ -290,7 +250,7 @@ module.exports =
                 deferred.resolve(data);
             }, 
             function (error) {
-                handleError(errorCallback, error);
+                logError(error);
                 deferred.reject(error); 
             });
         }
