@@ -1,0 +1,23 @@
+{
+    "name": "opent2t-onboarding-verahub",
+    "version": "1.0.1",
+    "dependencies": {
+        "inquirer": "^0.12.0",
+        "crypto-js": "3.1.6",
+        "q": ""
+    },
+    "devDependencies": {
+        "optimist": "0.6.1"
+    },
+    "description": "Sample Vera Hub onboarding module for Open Translators to Things",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/openT2T/onboarding.git"
+    },
+    "author": "Open Translators to Things",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/openT2T/onboarding/issues"
+    },
+    "homepage": "https://github.com/openT2T/onboarding#readme"
+}
