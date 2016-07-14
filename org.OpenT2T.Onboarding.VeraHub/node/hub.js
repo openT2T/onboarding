@@ -106,7 +106,7 @@ var internal =
 
             response.on('end', function() {
                 if (response.statusCode != 200) {
-                    deferred.reject(response);
+                    deferred.reject(new Error("Invalid HTTP response: " + response.statusCode + " - " + response.statusMessage));
                 } else {
                     if (returnRawBody)
                     {
@@ -199,13 +199,10 @@ module.exports =
         return internal.getMmsAuthInfo().then((mmsInfo) => {
             // get account server session token
             return internal.getSessionToken(mmsInfo.Server_Account).then((accountSessionToken) => {
-
                 // get info for the hub/device on the account, including relay server
                 return internal.getDeviceInfo(mmsInfo.Server_Account, accountSessionToken, internal.pkDevice).then((deviceInfo) => {
-
                     // get relay server session token
                     return internal.getSessionToken(deviceInfo.Server_Relay, mmsInfo).then((relaySessionToken) => {
-
                         // get hubs info, vera calls this user_data
                         return internal.getUserData(deviceInfo.Server_Relay, relaySessionToken, internal.pkDevice).then((hubInfo) => {
                             this.relaySessionToken = relaySessionToken;
@@ -232,7 +229,7 @@ module.exports =
         if (!answers.pkDevice && !answers.username && ! answers.password)
         {
             logError("Invalid input");
-            setTimeout(function () { deferred.reject("Invalid input"); }, 100);
+            setTimeout(function () { deferred.reject(new Error("Invalid input")); }, 100);
         }
         else
         {   
