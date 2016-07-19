@@ -6,24 +6,27 @@ var hubDevice = require('./hub.js');
 
 function handleDevices(hubInfo, deviceTypeFilter, successCallback, errorCallback) 
 {
-    console.log("[VeraHub] handleDevices (" + deviceTypeFilter + ")");
+    console.log("[Lightify] handleDevices (" + deviceTypeFilter + ")");
 
     var devices = hubInfo.devices; 
 
-    if (deviceTypeFilter !== "All") {
+    if (deviceTypeFilter !== "All")
+    {
+        var lowerCaseFilter = deviceTypeFilter.toLowerCase();
         // apply the id key filter (only show devices that have this id key)
         devices = devices.filter(function(device) {
-            return device.device_type.indexOf(deviceTypeFilter) > 0;
+            return device.deviceType.toLowerCase().indexOf(lowerCaseFilter) >= 0;
         });
     }
 
-    if (deviceTypeFilter === "All") {
+    if (deviceTypeFilter === "All")
+    {
         hubDevice.printDevices(devices);
     }
 
     if (!!devices && devices.length > 0) {
         var deviceChoices = devices.map(function(device) {
-            return device.name + ' (' + device.id + ')';
+            return device.name + ' (' + device.deviceId + ')';
         });
 
         // ask the user to select a device
@@ -40,11 +43,12 @@ function handleDevices(hubInfo, deviceTypeFilter, successCallback, errorCallback
             var deviceId = d.substring(d.lastIndexOf('(') + 1, d.lastIndexOf(')'));
 
             if (successCallback) {
-                successCallback(hubDevice.relaySessionToken, hubDevice.relayServer, deviceId, 'All done, happy coding!');
+                successCallback(hubDevice.securityToken, deviceId, 'All done, happy coding!');
             }
         });
     }
-    else {
+    else
+    {
         if (errorCallback) {
             errorCallback('NotFound', 'No devices found.');
         }
@@ -58,14 +62,14 @@ module.exports = {
         console.log('deviceTypeFilter   : ' + deviceTypeFilter);
 
         // build questions for credentials
-        console.log('\nPlease enter credentials for the Vera API:\n');
+        console.log('\nPlease enter credentials for the Osram Lightify API:\n');
 
         // show questions for credentials
         inquirer.prompt(hubDevice.inputNeeded, function(answers) {
-            console.log('\nThanks! Signing you in to Vera.');
+            console.log('\nThanks! Signing you in to Osram Lightify.');
 
-            hubDevice.connect(answers).then(function () {
-                handleDevices(hubDevice.hubInfo, deviceTypeFilter, successCallback, errorCallback); 
+            hubDevice.connect(answers).then(function (){
+                handleDevices(hubDevice, deviceTypeFilter, successCallback, errorCallback); 
             },
             function (error) {
                 if (errorCallback) {
