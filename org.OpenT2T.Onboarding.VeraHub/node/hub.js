@@ -4,17 +4,14 @@ var https = require('https');
 var cryptojs_sha1 = require('crypto-js');
 var q = require('q');
 
-function logError(error)
-{
+function logError(error) {
     console.log("[VeraHub] Error!");
-    if (error.statusMessage)
-    {
+    if (error.statusMessage) {
         console.log("[VeraHub] HTTP Error: " + error.statusCode + " - " + error.statusMessage);
         console.log("[VeraHub] HTTP Headers: ");
         console.log(error.headers);
     }
-    else
-    {
+    else {
         console.log(error);
     }
 }
@@ -32,13 +29,11 @@ var internal =
     username: undefined,
     sha1Password: undefined,
 
-    getSessionToken : function (url)
-    {
+    getSessionToken : function (url) {
         return this.makeVeraRequest(url, this.veraSessionTokenPath, false, false, this.mmsInfo, true);
     },
 
-    getMmsAuthInfo : function ()
-    {
+    getMmsAuthInfo : function () {
         var path = '/autha/auth/username/' + this.username + '?SHA1Password=' + this.sha1Password + '&PK_Oem=1';
         
         return this.makeVeraRequest(this.veraAccountUrl, path, false, false, false)
@@ -48,21 +43,18 @@ var internal =
             });
     },
 
-    getDeviceInfo : function (url, sessionToken, pkDevice)
-    {
+    getDeviceInfo : function (url, sessionToken, pkDevice) {
         var path = '/device/device/device/' + pkDevice;
         return this.makeVeraRequest(url, path, sessionToken, false, false);
     },
 
-    getUserData : function (url, sessionToken, pkDevice)
-    {
+    getUserData : function (url, sessionToken, pkDevice) {
         // vera defined fixed port number
         var path = '/relay/relay/relay/device/' + pkDevice + '/port_3480/data_request?id=user_data&output_format=json';
         return this.makeVeraRequest(url, path, sessionToken, true, false);
     },
 
-    makeVeraRequest : function (url, path, sessionToken, keepAlive, mmsInfo, returnRawBody)
-    {
+    makeVeraRequest : function (url, path, sessionToken, keepAlive, mmsInfo, returnRawBody) {
         console.log("[VeraHub] -------------------------")
         console.log("[VeraHub] makeVeraRequest: " + url)
         console.log("[VeraHub] path           : " + path);
@@ -79,20 +71,17 @@ var internal =
             method: 'GET'
         };
 
-        if (sessionToken)
-        {
+        if (sessionToken) {
             getOptions.headers = { 'MMSSession': sessionToken };
         }
-        else if (mmsInfo)
-        {
+        else if (mmsInfo) {
             getOptions.headers = {
                 'MMSAuth': mmsInfo.Identity,
                 'MMSAuthSig': mmsInfo.IdentitySignature
             };
         }
 
-        if (keepAlive)
-        {
+        if (keepAlive) {
             var keepAliveAgent = new https.Agent({keepAlive: true});
             getOptions.agent = keepAliveAgent;
         }
@@ -108,12 +97,10 @@ var internal =
                 if (response.statusCode != 200) {
                     deferred.reject(new Error("Invalid HTTP response: " + response.statusCode + " - " + response.statusMessage));
                 } else {
-                    if (returnRawBody)
-                    {
+                    if (returnRawBody) {
                         deferred.resolve(body);
                     }
-                    else
-                    {
+                    else {
                         var parsedBody = JSON.parse(body);
                         deferred.resolve(parsedBody);
                     }
@@ -133,8 +120,7 @@ var internal =
     },
 };
 
-module.exports = 
-{
+module.exports =  {
     inputNeeded : [
         {
             type: 'input',
@@ -215,24 +201,18 @@ module.exports =
                     })
                 })
             })
-        },
-        function (error) { 
-            throw error;
         });
     },
 
     // connects to the hub based on the answers provided
-    connect : function(answers)
-    {
+    connect : function(answers) {
         var deferred = q.defer();
 
-        if (!answers.pkDevice && !answers.username && ! answers.password)
-        {
+        if (!answers.pkDevice && !answers.username && ! answers.password) {
             logError("Invalid input");
             setTimeout(function () { deferred.reject(new Error("Invalid input")); }, 100);
         }
-        else
-        {   
+        else {   
             // vera requires the username to be stored in all lowercase
             internal.username = answers.username.toLowerCase();
             internal.password = answers.password;
@@ -255,8 +235,7 @@ module.exports =
         return deferred.promise;
     },
 
-    printDevices: function (devices)
-    {
+    printDevices: function (devices) {
         devices.forEach(function(device) {
             console.log(device.name + " (" + device.id + ") - " + device.device_type);
         });
