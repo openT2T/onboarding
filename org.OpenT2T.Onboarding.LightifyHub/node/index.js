@@ -44,7 +44,6 @@ function handleDevices(hubInfo, deviceTypeFilter, successCallback, errorCallback
 
             if (successCallback) {
                 successCallback(hubDevice.securityToken, deviceId, 'All done, happy coding!');
-                return;
             }
         });
     }
@@ -52,7 +51,6 @@ function handleDevices(hubInfo, deviceTypeFilter, successCallback, errorCallback
     {
         if (errorCallback) {
             errorCallback('NotFound', 'No devices found.');
-            return;
         }
     }
 }

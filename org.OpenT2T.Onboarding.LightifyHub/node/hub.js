@@ -3,23 +3,19 @@
 var https = require('https');
 var q = require('q');
 
-function logError(error)
-{
+function logError(error) {
     console.log("[Lightify] Error!");
-    if (error.statusMessage)
-    {
+    if (error.statusMessage) {
         console.log("[Lightify] HTTP Error: " + error.statusCode + " - " + error.statusMessage);
         console.log("[Lightify] HTTP Headers: ");
         console.log(error.headers);
     }
-    else
-    {
+    else {
         console.log(error);
     }
 }
 
-var internal = 
-{
+var internal = {
     // global Osram Lightify constants
     lightifyBaseUrl : "us.lightify-api.org",
     lightifySessionUrl : "/lightify/services/session",
@@ -30,8 +26,7 @@ var internal =
     password: undefined,
     securityToken: undefined,
 
-    getSecurityToken : function ()
-    {
+    getSecurityToken : function () {
         var postData = JSON.stringify({
             username: this.username,
             password: this.password,
@@ -45,13 +40,11 @@ var internal =
             });
     },
 
-    getDevices : function ()
-    {
+    getDevices : function () {
         return this.makeLightifyRequest(this.lightifyBaseUrl, this.lightifyDevicesUrl, this.securityToken, false, 'GET', undefined);
     },
 
-    makeLightifyRequest : function (url, path, securityToken, returnRawBody, method, content)
-    {
+    makeLightifyRequest : function (url, path, securityToken, returnRawBody, method, content) {
         console.log("[Lightify] -------------------------")
         console.log("[Lightify] method             : " + method);
         console.log("[Lightify] makeLightifyRequest: " + url)
@@ -68,12 +61,10 @@ var internal =
             headers: {}
         };
 
-        if (securityToken)
-        {
+        if (securityToken) {
             requestOptions.headers['Authorization'] = securityToken;
         }
-        else if (content)
-        {
+        else if (content) {
             requestOptions.headers['Content-Type'] = 'application/json';
             requestOptions.headers['Content-Length'] = content.length;
         }
@@ -92,12 +83,10 @@ var internal =
                 if (response.statusCode != 200) {
                     deferred.reject(new Error("Invalid HTTP response: " + response.statusCode + " - " + response.statusMessage));
                 } else {
-                    if (returnRawBody)
-                    {
+                    if (returnRawBody) {
                         deferred.resolve(body);
                     }
-                    else
-                    {
+                    else {
                         var parsedBody = JSON.parse(body);
                         deferred.resolve(parsedBody);
                     }
@@ -113,8 +102,7 @@ var internal =
             deferred.reject(e);
         });
 
-        if (content)
-        {
+        if (content) {
             request.write(content);
         }
 
@@ -124,8 +112,7 @@ var internal =
     },
 };
 
-module.exports = 
-{
+module.exports = {
     inputNeeded : [
         {
             type: 'input',
@@ -178,7 +165,7 @@ module.exports =
     securityToken: undefined,
 
     // authorizes to the server based on the properties saved in the object 
-    authorize: function(errorCallback) {
+    authorize: function() {
         // get initial set of authorization info, including account server
         return internal.getSecurityToken().then((data) => {
             // get the list of devices
@@ -188,26 +175,20 @@ module.exports =
                 this.deviceSerialNumber = internal.deviceSerialNumber;
                 return devices;
             })
-        },
-        function (error) { 
-            throw error;
         });
     },
 
     // connects to the hub based on the answers provided
-    connect : function(answers)
-    {
+    connect : function(answers) {
         var deferred = q.defer();
 
         console.log("[Lightify] connect");
 
-        if (!answers.deviceSerialNumber && !answers.username && ! answers.password)
-        {
+        if (!answers.deviceSerialNumber && !answers.username && ! answers.password) {
             logError("Invalid input");
-            setTimeout(function () { deferred.reject(new Error("Invalid input")); }, 100);
+            setImmediate(function () { deferred.reject(new Error("Invalid input")); });
         }
-        else
-        {   
+        else {   
             internal.username = answers.username;
             internal.password = answers.password;
             internal.deviceSerialNumber = answers.deviceSerialNumber;
@@ -224,8 +205,7 @@ module.exports =
         return deferred.promise;
     },
 
-    printDevices: function (devices)
-    {
+    printDevices: function (devices) {
         devices.forEach(function(device) {
             console.log(device.name + " (" + device.deviceId + ") - " + device.deviceType);
         });
