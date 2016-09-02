@@ -5,7 +5,7 @@ var inquirer = require('inquirer');
 // module exports, implementing the schema
 module.exports = {
 
-    onboard: function(name, instructionsUrl, successCallback, errorCallback) {
+    onboard: function(name, instructionsUrl, successCallback) {
         console.log('Onboarding device  : ' + name);
         console.log('instructions Url   : ' + instructionsUrl);
 

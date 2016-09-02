@@ -17,12 +17,12 @@ function onSuccess(access_token, expires_in, device_id, message) {
     setTimeout(function() {
         process.exit();
     }, 3000);
-};
+}
 
 function onError(type, message) {
     console.log('Error (' + type + '): ' + message);
     process.exit();
-};
+}
 
 // Call onboarding with provided parameters (this is normally called by the runtime when the user initiates onboarding)
 nest.onboard(argv.n, argv.f, onSuccess, onError);

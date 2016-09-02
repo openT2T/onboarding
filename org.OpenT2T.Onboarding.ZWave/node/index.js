@@ -35,7 +35,7 @@ module.exports = {
 
         var hub_homeid;
 
-        zwave.on('connected', function(homeid) {
+        zwave.on('connected', function() {
             // console.log('=================== CONNECTED! ====================');
         });
 
@@ -106,11 +106,8 @@ module.exports = {
                         zwave.enablePoll(nodeid, comclass);
                         break;
                 }
-                var values = nodes[nodeid]['classes'][comclass];
             }
         });
-
-        var addressList = [];
 
         zwave.on('scan complete', function() {
             var deviceChoices = [];

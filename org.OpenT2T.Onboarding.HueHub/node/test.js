@@ -13,12 +13,12 @@ function onSuccess(ipAddress, userId, uniqueId, message) {
     console.log("  message   : " + message);
 
     process.exit();
-};
+}
 
 function onError(type, message) {
     console.log('Error (' + type + '): ' + message);
     process.exit();
-};
+}
 
 // Call onboarding with provided parameters (this is normally called by the runtime when the user initiates onboarding)
 huehub.onboard(argv.n, argv.u, onSuccess, onError);

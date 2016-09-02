@@ -2,18 +2,7 @@
 
 var hue = require("node-hue-api");
 var HueApi = require("node-hue-api").HueApi;
-var readline = require('readline');
 var inquirer = require('inquirer');
-var stringify = require('json-stringify-safe');
-
-
-var upnpErr = function(err) {
-    console.log("upnpError = " + err);
-};
-
-var exit = function(err) {
-    process.exit(0);
-};
 
 var LightInfo = function(uniqueid, name)
 {
@@ -25,7 +14,7 @@ var getLights = function(ipaddr, userId, callback) {
     var api = new HueApi(ipaddr, userId);
 	var lights = [];
     api.lights(function(err, result) {
-        if (!!err)
+        if (err)
             console.log("api.lights " + err);
         else {
             for (var light of result.lights) {
@@ -110,7 +99,7 @@ module.exports = {
                 var rl = readline.createInterface(process.stdin, process.stdout);
                 rl.setPrompt('Then press Enter here within 30 seconds...');
                 rl.prompt();
-                rl.on('line', function(line) {
+                rl.on('line', function() {
                     var hueapi = new HueApi();
                     hueapi.createUser(ipaddr, function(err, userId) {
                         if (err) {

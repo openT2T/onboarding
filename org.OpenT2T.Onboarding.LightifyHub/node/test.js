@@ -12,12 +12,12 @@ function onSuccess(securityToken, deviceId, message) {
     console.log("  message       : " + message);
     
     process.exit();
-};
+}
 
 function onError(type, message) {
     console.log('Error (' + type + '): ' + message);
     process.exit();
-};
+}
 
 // Call onboarding with provided parameters (this is normally called by the runtime when the user initiates onboarding)
 lightifyhub.onboard(argv.f, onSuccess, onError);

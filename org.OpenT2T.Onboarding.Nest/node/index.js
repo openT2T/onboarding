@@ -1,9 +1,10 @@
 'use strict';
 
+/* eslint no-unused-vars: "off" */
+
 var inquirer = require('inquirer');
 var open = require('open');
 var express = require('express');
-var request = require('request');
 var randomstring = require('randomstring');
 var https = require('follow-redirects').https;
 
