@@ -1,6 +1,6 @@
 # Nest Onboarding
 Sample [Nest](http://www.nest.com/) onboarding module for Open Translators to Things. May be used to discover devices connected to Nest per the 
-[org.OpenT2T.Onboarding.Nest.xml](https://github.com/opent2t/onboarding/blob/master/org.opent2t.onboarding.nest/org.opent2t.onboarding.nest.xml) schema.
+[org.opent2t.onboarding.nest.xml](https://github.com/opent2t/onboarding/blob/master/org.opent2t.onboarding.nest/org.opent2t.onboarding.nest.xml) schema.
 
 See schema definition for inputs to the onboarding method.
 
