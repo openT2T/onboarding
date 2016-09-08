@@ -5,7 +5,7 @@ var noble = require('noble');
 // module exports, implementing the schema
 module.exports = {
 
-    onboard: function(name, advertisementLocalNameFilter, successCallback, errorCallback) {
+    onboard: function(name, advertisementLocalNameFilter, successCallback) {
         console.log('Onboarding device            : ' + name);
         console.log('advertisementLocalNameFilter : ' + advertisementLocalNameFilter);
 
@@ -27,7 +27,7 @@ module.exports = {
                         }
 
                         return;
-                };
+                }
             });
 
             noble.startScanning();

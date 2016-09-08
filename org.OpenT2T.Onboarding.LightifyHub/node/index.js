@@ -1,6 +1,5 @@
 'use strict';
 
-var https = require('https');
 var inquirer = require('inquirer');
 var hubDevice = require('./hub.js');
 

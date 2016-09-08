@@ -10,12 +10,12 @@ function onSuccess(address, message) {
     console.log("  message      : " + message);
 
     process.exit();
-};
+}
 
 function onError(type, message) {
     console.log('Error (' + type + '): ' + message);
     process.exit();
-};
+}
 
 // Call onboarding to find available devices
 zwave.onboard('Z-Wave device', argv.c, argv.m, argv.i, onSuccess, onError);

@@ -1,5 +1,7 @@
 'use strict';
 
+/* eslint no-unused-vars: "off" */
+
 var https = require('https');
 var inquirer = require('inquirer');
 
