@@ -1,6 +1,6 @@
 {
-   "name": "org-opent2t-onboarding-wink",
-   "version": "0.0.1",
+   "name": "opent2t-onboarding-winkhub",
+   "version": "1.0.2",
    "description": "Onboarding for Wink",
    "license": "MIT",
    "main": "thingOnboarding.js",
