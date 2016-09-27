@@ -6,3 +6,6 @@ node_modules
 *.DS_Store
 logs
 *.log
+.idea
+.vscode/launch.json
+package.json
