@@ -41,6 +41,7 @@ class Onboarding {
                 return new accessTokenInfo(
                     tokenInfo.access_token,
                     tokenInfo.refresh_token,
+                    authInfo[1].client_id,
                     tokenInfo.token_type,
                     tokenInfo.expires_in
                 );
