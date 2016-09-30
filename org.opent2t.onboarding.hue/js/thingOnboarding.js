@@ -23,11 +23,11 @@ class Onboarding {
         };
 
         return request(options)
-            .then(function (response) {
+            .then(function () {
                 //Do Nothing
             })
             .catch(function (err) {
-                if (err.statusCode = "401") {
+                if (err.statusCode == '401') {
                     //extract nonce code from header
                     var digestHeader = err.response.headers['www-authenticate'];
                     var nonce = digestHeader.substr(digestHeader.indexOf('nonce=\"') + 7, 32);
