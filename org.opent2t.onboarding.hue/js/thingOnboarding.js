@@ -116,7 +116,7 @@ class Onboarding {
                                                                     statusMessage:  body.error.description
                                                                 };
                                                             } else {
-                                                                errMsg.statusCode = "500";
+                                                                errMsg.statusCode = 500;
                                                                 errMsg.response = {
                                                                     statusMessage: 'Internal Error - Failed to get whitelist ID.'
                                                                 };
@@ -137,7 +137,7 @@ class Onboarding {
                                                         statusMessage:  body.error.description
                                                     };
                                                 } else {
-                                                    errMsg.statusCode = statusCode: "500";
+                                                    errMsg.statusCode = 500;
                                                     errMsg.response = {
                                                         statusMessage: 'Internal Error - Failed to set link button press.'
                                                     };
