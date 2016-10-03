@@ -111,7 +111,7 @@ class Onboarding {
                                                         } else {
                                                             var errMsg = {};
                                                             if(typeof body.error !== 'undefined') {
-                                                                errMsg.statusCode = body.error.type,
+                                                                errMsg.statusCode = body.error.type;
                                                                 errMsg.response = {
                                                                     statusMessage:  body.error.description.
                                                                 };
@@ -132,7 +132,7 @@ class Onboarding {
                                             } else {
                                                 var errMsg = {};
                                                 if(typeof body.error !== 'undefined'){
-                                                    errMsg.statusCode = body.error.type,
+                                                    errMsg.statusCode = body.error.type;
                                                     errMsg.response = {
                                                         statusMessage:  body.error.description.
                                                     };
