@@ -113,7 +113,7 @@ class Onboarding {
                                                             if(typeof body.error !== 'undefined') {
                                                                 errMsg.statusCode = body.error.type;
                                                                 errMsg.response = {
-                                                                    statusMessage:  body.error.description.
+                                                                    statusMessage:  body.error.description
                                                                 };
                                                             } else {
                                                                 errMsg.statusCode = "500";
@@ -134,7 +134,7 @@ class Onboarding {
                                                 if(typeof body.error !== 'undefined'){
                                                     errMsg.statusCode = body.error.type;
                                                     errMsg.response = {
-                                                        statusMessage:  body.error.description.
+                                                        statusMessage:  body.error.description
                                                     };
                                                 } else {
                                                     errMsg.statusCode = statusCode: "500";
