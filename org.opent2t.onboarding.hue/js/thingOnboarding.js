@@ -83,7 +83,7 @@ class Onboarding {
                                     return request(putOptions)
                                         .then(function (body) {
                                             //pressed link button
-                                            if (typeof body[0].success !== 'undefined') {
+                                            if (typeof body[0] !== 'undefined' && typeof body[0].success !== 'undefined') {
                                                 var postOptions = {
                                                     url: 'https://api.meethue.com/v2/bridges/' + bridgeIds[0].id + '/',
                                                     method: "POST",
@@ -97,7 +97,7 @@ class Onboarding {
                                                 return request(postOptions)
                                                     .then(function (body) {
                                                         //Get whitelist ID
-                                                        if (typeof body[0].success !== 'undefined') {
+                                                        if (typeof body[0] !== 'undefined' && typeof body[0].success !== 'undefined') {
 
                                                             console.log('Success.');
 
@@ -109,13 +109,18 @@ class Onboarding {
                                                                 body[0].success.username
                                                             );
                                                         } else {
-                                                            var errMsg = {
-                                                                statusCode: "000",
-                                                                response: {
-                                                                    statusMessage: 'Failed to get whitelist ID.'
-                                                                }
-                                                            };
-
+                                                            var errMsg = {};
+                                                            if(typeof body.error !== 'undefined') {
+                                                                errMsg.statusCode = body.error.type,
+                                                                errMsg.response = {
+                                                                    statusMessage:  body.error.description.
+                                                                };
+                                                            } else {
+                                                                errMsg.statusCode = "500";
+                                                                errMsg.response = {
+                                                                    statusMessage: 'Internal Error - Failed to get whitelist ID.'
+                                                                };
+                                                            }
                                                             throw errMsg;
                                                         }
                                                     })
@@ -125,13 +130,18 @@ class Onboarding {
                                                         throw err;
                                                     });
                                             } else {
-                                                var errMsg = {
-                                                    statusCode: "000",
-                                                    response: {
-                                                        statusMessage: 'Failed to set link button press.'
-                                                    }
-                                                };
-
+                                                var errMsg = {};
+                                                if(typeof body.error !== 'undefined'){
+                                                    errMsg.statusCode = body.error.type,
+                                                    errMsg.response = {
+                                                        statusMessage:  body.error.description.
+                                                    };
+                                                } else {
+                                                    errMsg.statusCode = statusCode: "500";
+                                                    errMsg.response = {
+                                                        statusMessage: 'Internal Error - Failed to set link button press.'
+                                                    };
+                                                }
                                                 throw errMsg;
                                             }
                                         })
@@ -143,9 +153,9 @@ class Onboarding {
 
                                 } else {
                                     var errMsg =  {
-                                        statusCode : "000",
+                                        statusCode : "500",
                                         response : {
-                                            statusMessage: 'No bridge is associated to the account.'
+                                            statusMessage: 'Internal Error - No bridge is associated to the account. No bridge credential was set.'
                                         }
                                     };
 
