@@ -1,28 +1,28 @@
 {
-   "name": "org-opent2t-onboarding-hue",
-   "version": "1.0.0",
-   "description": "Onboarding for Hue",
-   "license": "MIT",
-   "main": "thingOnboarding.js",
-   "files": [
-     "thingOnboarding.js",
-     "common.js",
-     "package.json"
-   ],
-   "repository": {
-     "type": "git",
-     "url": "githttps://github.com/openT2T/onboarding.git"
-   },
-   "bugs": {
-     "url": "https://github.com/openT2T/onboarding/issues"
-   },
-   "homepage": "https://github.com/openT2T/onboarding#readme",
-   "dependencies": {
-     "request": "^2.74.0",
-     "request-promise": "^4.1.1",
-     "opent2t": "^1.0.1"
-   },
-   "devDependencies": {
-     "ava": "^0.15.2"
-   }
- }
+  "name": "opent2t-onboarding-org-opent2t-onboarding-hue",
+  "version": "1.0.0",
+  "description": "Onboarding for Hue",
+  "license": "MIT",
+  "main": "thingOnboarding.js",
+  "files": [
+    "thingOnboarding.js",
+    "common.js",
+    "package.json"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "githttps://github.com/openT2T/onboarding.git"
+  },
+  "bugs": {
+    "url": "https://github.com/openT2T/onboarding/issues"
+  },
+  "homepage": "https://github.com/openT2T/onboarding#readme",
+  "dependencies": {
+    "request": "^2.74.0",
+    "request-promise": "^4.1.1",
+    "opent2t": "^1.0.1"
+  },
+  "devDependencies": {
+    "ava": "^0.15.2"
+  }
+}
