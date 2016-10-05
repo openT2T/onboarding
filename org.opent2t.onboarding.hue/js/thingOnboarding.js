@@ -91,7 +91,7 @@ class Onboarding {
                                                         'Authorization': 'Bearer ' + tokenInfo.access_token,
                                                         'Content-Type': 'application/json'
                                                     },
-                                                    json: { 'devicetype': authInfo[2] + ' on ' + authInfo[3] }
+                                                    json: { 'devicetype': authInfo[0].app_name + ' on ' + authInfo[0].device_id }
                                                 };
 
                                                 return request(postOptions)
