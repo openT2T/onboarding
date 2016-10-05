@@ -6,4 +6,3 @@ See schema definition for inputs to the onboarding method, and outputs via succe
 
 ## Sample usage (via test.js script)
 node test -n 'Hue Light Bulb'
-

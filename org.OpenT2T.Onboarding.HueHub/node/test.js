@@ -22,4 +22,3 @@ function onError(type, message) {
 
 // Call onboarding with provided parameters (this is normally called by the runtime when the user initiates onboarding)
 huehub.onboard(argv.n, argv.u, onSuccess, onError);
-
