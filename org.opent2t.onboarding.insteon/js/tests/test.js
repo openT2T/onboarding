@@ -7,7 +7,7 @@ console.log("Test Config:");
 console.log(JSON.stringify(testConfig, null, 2));
 
 ///
-/// Run a series of tests to validate the translator
+/// Run a series of tests to validate Insteon onboarding
 ///
 
 // onboard
