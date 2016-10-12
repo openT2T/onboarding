@@ -14,7 +14,7 @@ class Onboarding {
         // as part of the schema and manifest.xml
         var params = 'grant_type=authorization_code&client_id=' + authInfo[0].client_id
                    + '&client_secret=' + authInfo[0].client_secret
-                   + '&redirect_uri=http://localhost:8080/success'
+                   + '&redirect_uri=' + authInfo[0].redirect_url
                    + '&code=' + authInfo[1]
                    + '&scope=app';
 
@@ -40,6 +40,7 @@ class Onboarding {
                 var tokenInfo = JSON.parse(body); // This includes refresh token, scope etc..
                 return new accessTokenInfo(
                     tokenInfo.access_token,
+                    authInfo[0].client_id,
                     tokenInfo.token_type,
                     tokenInfo.expires_in,
                     tokenInfo.scope
