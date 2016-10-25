@@ -1,6 +1,3 @@
-/* jshint esversion: 6 */
-/* jshint node: true */
-
 'use strict';
 var request = require('request-promise');
 var accessTokenInfo = require('./common').accessTokenInfo;

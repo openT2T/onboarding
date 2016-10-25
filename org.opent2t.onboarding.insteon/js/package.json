@@ -24,5 +24,13 @@
   },
   "devDependencies": {
     "ava": "^0.15.2"
+  },
+  "scripts": {
+    "test": "ava"
+  },
+  "ava": {
+    "files": [
+      "tests/*.js"
+    ]
   }
 }
