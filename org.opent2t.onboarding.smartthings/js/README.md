@@ -29,7 +29,7 @@ https://graph.api.smartthings.com/oauth/authorize?response_type=code&client_id={
 
 ### 2. Create the `tests/testConfig.json` file
 Under the `test` folder, create a file named `testConfig.json`(this file is added to .gitignore to prevent inadvertent check-in). The testConfig.json file for onboarding the hub should be in the format below:
-```
+```json
 [
   {
     "client_id": "<Client ID>",
@@ -46,7 +46,7 @@ Navigate to the `test` folder and run:
 ava test.js
 ```
 If the test succeed, you will get the credentials to access the hub in JSON format. The credentails will be formmated like this:
-```
+```json
 {
   "accessToken": "<Access Token>",
   "clientId": "<Client ID>",
