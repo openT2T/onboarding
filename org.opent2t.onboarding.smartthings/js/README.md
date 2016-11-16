@@ -1,5 +1,5 @@
 # SmartThings Onboarding
-Sample [SmartThings](http://www.smartthings.com/) onboarding module for Open Translators to Things. May be used to discover devices connected to SmartThings per the 
+This is a sample [SmartThings](http://www.smartthings.com/) onboarding module for Open Translators to Things. It may be used to discover devices connected to SmartThings per the 
 [org.opent2t.onboarding.smartthings.xml](https://github.com/opent2t/onboarding/blob/master/org.opent2t.onboarding.smartthings/org.opent2t.onboarding.smartthings.xml) schema.
 
 See schema definition for inputs to the onboarding method.
@@ -45,7 +45,7 @@ Navigate to the `test` folder and run:
 ```bash
 ava test.js
 ```
-If the test succeed, you would get a credentials to access the hub  in JSON format. it should be something like this:
+If the test succeed, you will get the credentials to access the hub in JSON format. The credentails will be formmated like this:
 ```
 {
   "accessToken": "<Access Token>",
@@ -54,3 +54,4 @@ If the test succeed, you would get a credentials to access the hub  in JSON form
   "ttl": <Time to Live>,
   "scope": "app"
 }
+```
