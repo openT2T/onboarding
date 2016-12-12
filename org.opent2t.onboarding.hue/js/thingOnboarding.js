@@ -1,7 +1,4 @@
-﻿/* jshint esversion: 6 */
-/* jshint node: true */
-
-'use strict';
+﻿'use strict';
 var request = require('request-promise');
 var accessTokenInfo = require('./common').accessTokenInfo;
 var crypto = require('crypto');
@@ -103,7 +100,9 @@ class Onboarding {
 
                                                             return new accessTokenInfo(
                                                                 tokenInfo.access_token,
+                                                                tokenInfo.access_token_expires_in,
                                                                 tokenInfo.refresh_token,
+                                                                tokenInfo.access_token_expires_in,
                                                                 tokenInfo.token_type,
                                                                 bridgeIds[0].id,
                                                                 body[0].success.username
