@@ -1,9 +1,12 @@
-/* jshint esversion: 6 */
-/* jshint node: true */
-
 'use strict';
 var request = require('request-promise');
 var accessTokenInfo = require('./common').accessTokenInfo;
+
+function add2CurrentUTC(seconds) {
+    var t = parseInt(Math.floor(new Date().getTime() / 1000));
+    t += parseInt(seconds);
+    return t;
+}
 
 class Onboarding {
 
@@ -42,7 +45,7 @@ class Onboarding {
                     tokenInfo.access_token,
                     authInfo[0].client_id,
                     tokenInfo.token_type,
-                    tokenInfo.expires_in,
+                    add2CurrentUTC(tokenInfo.expires_in),
                     tokenInfo.scope
                 );
             })
