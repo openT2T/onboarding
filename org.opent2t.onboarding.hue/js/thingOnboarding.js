@@ -3,6 +3,12 @@ var request = require('request-promise');
 var accessTokenInfo = require('./common').accessTokenInfo;
 var crypto = require('crypto');
 
+function add2CurrentUTC(seconds){
+    var t = parseInt(Math.floor(new Date().getTime() / 1000));
+    t += parseInt(seconds);
+    return t;
+}
+
 class Onboarding {
 
     onboard(authInfo) {
@@ -100,9 +106,9 @@ class Onboarding {
 
                                                             return new accessTokenInfo(
                                                                 tokenInfo.access_token,
-                                                                tokenInfo.access_token_expires_in,
+                                                                add2CurrentUTC(tokenInfo.access_token_expires_in),
                                                                 tokenInfo.refresh_token,
-                                                                tokenInfo.access_token_expires_in,
+                                                                add2CurrentUTC(tokenInfo.refresh_token_expires_in),
                                                                 tokenInfo.token_type,
                                                                 bridgeIds[0].id,
                                                                 body[0].success.username
