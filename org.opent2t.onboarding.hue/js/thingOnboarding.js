@@ -12,13 +12,13 @@ function add2CurrentUTC(seconds){
 class Onboarding {
 
     onboard(authInfo) {
-        console.log("Onboarding Hue Hub");
+        console.log('Onboarding Hue Hub');
 
         // this comes from the onboardFlow property 
         // as part of the schema and manifest.xml
         var options = {
-            url: "https://api.meethue.com/oauth2/token?" + 'code=' + authInfo[1] + '&grant_type=authorization_code',
-            method: "POST",
+            url: 'https://api.meethue.com/oauth2/token?' + 'code=' + authInfo[1] + '&grant_type=authorization_code',
+            method: 'POST',
             headers: {
                 'cache-control': 'no-cache'
             },
@@ -54,7 +54,7 @@ class Onboarding {
                         var tokenInfo = JSON.parse(body); // This includes refresh token, scope etc..
                         var getOptions = {
                             url: 'https://api.meethue.com/v2/bridges',
-                            method: "GET",
+                            method: 'GET',
                             headers: {
                                 'Authorization': 'Bearer ' + tokenInfo.access_token
                             },
@@ -89,7 +89,7 @@ class Onboarding {
                                             if (typeof body[0] !== 'undefined' && typeof body[0].success !== 'undefined') {
                                                 var postOptions = {
                                                     url: 'https://api.meethue.com/v2/bridges/' + bridgeIds[0].id + '/',
-                                                    method: "POST",
+                                                    method: 'POST',
                                                     headers: {
                                                         'Authorization': 'Bearer ' + tokenInfo.access_token,
                                                         'Content-Type': 'application/json'
@@ -130,8 +130,8 @@ class Onboarding {
                                                         }
                                                     })
                                                     .catch(function (err) {
-                                                        console.log("Request failed to: " + postOptions.method + " - " + postOptions.url);
-                                                        console.log("Error            : " + err.statusCode + " - " + err.response.statusMessage);
+                                                        console.log('Request failed to: ' + postOptions.method + ' - ' + postOptions.url);
+                                                        console.log('Error            : ' + err.statusCode + ' - ' + err.response.statusMessage);
                                                         throw err;
                                                     });
                                             } else {
@@ -151,14 +151,14 @@ class Onboarding {
                                             }
                                         })
                                         .catch(function (err) {
-                                            console.log("Request failed to: " + putOptions.method + " - " + putOptions.url);
-                                            console.log("Error            : " + err.statusCode + " - " + err.response.statusMessage);
+                                            console.log('Request failed to: ' + putOptions.method + ' - ' + putOptions.url);
+                                            console.log('Error            : ' + err.statusCode + ' - ' + err.response.statusMessage);
                                             throw err;
                                         });
 
                                 } else {
                                     var errMsg =  {
-                                        statusCode : "500",
+                                        statusCode : '500',
                                         response : {
                                             statusMessage: 'Internal Error - No bridge is associated to the account. No bridge credential was set.'
                                         }
@@ -168,19 +168,19 @@ class Onboarding {
                                 }
                             })
                             .catch(function (err) {
-                                console.log("Request failed to: " + getOptions.method + " - " + getOptions.url);
-                                console.log("Error            : " + err.statusCode + " - " + err.response.statusMessage);
+                                console.log('Request failed to: ' + getOptions.method + ' - ' + getOptions.url);
+                                console.log('Error            : ' + err.statusCode + ' - ' + err.response.statusMessage);
                                 throw err;
                             });
                     })
                         .catch(function (err) {
-                            console.log("Request failed to: " + options.method + " - " + options.url);
-                            console.log("Error            : " + err.statusCode + " - " + err.response.statusMessage);
+                            console.log('Request failed to: ' + options.method + ' - ' + options.url);
+                            console.log('Error            : ' + err.statusCode + ' - ' + err.response.statusMessage);
                             throw err;
                         });
                 } else {
-                    console.log("Request failed to: " + options.method + " - " + options.url);
-                    console.log("Error            : " + err.statusCode + " - " + err.response.statusMessage);
+                    console.log('Request failed to: ' + options.method + ' - ' + options.url);
+                    console.log('Error            : ' + err.statusCode + ' - ' + err.response.statusMessage);
                     throw err;
                 }
             });

@@ -11,7 +11,7 @@ function add2CurrentUTC(seconds) {
 class Onboarding {
 
     onboard(authInfo) {
-        console.log("Onboarding Nest Hub");
+        console.log('Onboarding Nest Hub');
 
         // this comes from the onboardFlow property 
         // as part of the schema and manifest.xml
@@ -21,8 +21,8 @@ class Onboarding {
         params = params + '&grant_type=authorization_code';
 
         // build request URI
-        var requestUri = "https://api.home.nest.com/oauth2/access_token?" + params;
-        var method = "POST";
+        var requestUri = 'https://api.home.nest.com/oauth2/access_token?' + params;
+        var method = 'POST';
 
         // Set the headers
         var headers = {
@@ -46,8 +46,8 @@ class Onboarding {
                 );
             })
             .catch(function (err) {
-                console.log("Request failed to: " + options.method + " - " + options.url);
-                console.log("Error            : " + err.statusCode + " - " + err.response.statusMessage);
+                console.log('Request failed to: ' + options.method + ' - ' + options.url);
+                console.log('Error            : ' + err.statusCode + ' - ' + err.response.statusMessage);
                 // todo auto refresh in specific cases, issue 74
                 throw err;
             });
