@@ -13,7 +13,7 @@ class accessTokenInfo {
         this.refreshToken = refreshToken;
         this.apiKey = apiKey;
         this.tokenType = tokenType;
-        this.ttl = expires_in;
+        this.ttl = ttl;
     }
 }
 
