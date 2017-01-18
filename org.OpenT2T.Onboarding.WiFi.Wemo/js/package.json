@@ -1,0 +1,29 @@
+{
+   "name": "org-opent2t-onboarding-wifi-wemo",
+   "version": "0.0.1",
+   "description": "Onboarding for WeMo wifi devices",
+   "license": "MIT",
+   "main": "thingOnboarding.js",
+   "files": [
+     "thingOnboarding.js",
+     "upnpDiscovery.js",
+     "package.json"
+   ],
+   "repository": {
+     "type": "git",
+     "url": "githttps://github.com/openT2T/onboarding.git"
+   },
+   "bugs": {
+     "url": "https://github.com/openT2T/onboarding/issues"
+   },
+   "homepage": "https://github.com/openT2T/onboarding#readme",
+   "dependencies": {
+     "node-ssdp": "^2.8.0",
+     "q": "^1.4.1",
+     "xml2js": "^0.4.17"
+   },
+   "devDependencies": {
+     "ava": "^0.17.0",
+     "express": "^4.14.0"
+   }
+}
