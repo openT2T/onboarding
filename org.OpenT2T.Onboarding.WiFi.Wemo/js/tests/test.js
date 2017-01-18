@@ -47,7 +47,7 @@ test.serial('discoverSsdp', t => {
 
         var found = false;
         for(var i = 0; i < devices.length; i++) {
-            if (devices[i].friendlyName == "Fake Wemo Device") {
+            if (device.friendlyName == "Fake Wemo Device") {
                 found = true;
             }
         }
