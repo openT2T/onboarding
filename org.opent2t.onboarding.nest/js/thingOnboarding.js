@@ -39,7 +39,7 @@ class Onboarding {
         return request(options)
             .then(function (body) {
                 var tokenInfo = JSON.parse(body); // This includes refresh token, scope etc..
-                console.log(tokenInfo);
+
                 return new accessTokenInfo(
                     tokenInfo.access_token,
                     add2CurrentUTC(tokenInfo.expires_in)

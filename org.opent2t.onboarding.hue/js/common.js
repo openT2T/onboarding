@@ -3,7 +3,7 @@
 class accessTokenInfo {
     constructor(
         accessToken,
-        accessToken_ttl,
+        ttl,
         refreshToken,
         refreshToken_ttl,
         tokenType, // ex: 'bearer'
@@ -11,7 +11,7 @@ class accessTokenInfo {
         whitelistId
     ) {
         this.accessToken = accessToken;
-        this.accessToken_ttl = accessToken_ttl;
+        this.ttl = ttl;
         this.refreshToken = refreshToken;
         this.refreshToken_ttl = refreshToken_ttl;
         this.tokenType = tokenType;
