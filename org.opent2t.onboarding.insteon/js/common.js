@@ -6,14 +6,14 @@ class accessTokenInfo {
             refreshToken,
             apiKey,
             tokenType, // ex: 'bearer'
-            expires_in
+            ttl
         )
     {
         this.accessToken = accessToken;
         this.refreshToken = refreshToken;
         this.apiKey = apiKey;
         this.tokenType = tokenType;
-        this.expires_in = expires_in;
+        this.ttl = ttl;
     }
 }
 

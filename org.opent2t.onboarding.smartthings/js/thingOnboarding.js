@@ -1,14 +1,17 @@
-/* jshint esversion: 6 */
-/* jshint node: true */
-
 'use strict';
 var request = require('request-promise');
 var accessTokenInfo = require('./common').accessTokenInfo;
 
+function add2CurrentUTC(seconds) {
+    var t = parseInt(Math.floor(new Date().getTime() / 1000));
+    t += parseInt(seconds);
+    return t;
+}
+
 class Onboarding {
 
     onboard(authInfo) {
-        console.log("Onboarding SmartThings Hub");
+        console.log('Onboarding SmartThings Hub');
 
         // this comes from the onboardFlow property 
         // as part of the schema and manifest.xml
@@ -20,7 +23,7 @@ class Onboarding {
 
         // build request URI
         var requestUri = 'https://graph.api.smartthings.com/oauth/token?' + params;
-        var method = "POST";
+        var method = 'POST';
 
         // Set the headers
         var headers = {
@@ -42,13 +45,13 @@ class Onboarding {
                     tokenInfo.access_token,
                     authInfo[0].client_id,
                     tokenInfo.token_type,
-                    tokenInfo.expires_in,
+                    add2CurrentUTC(tokenInfo.expires_in),
                     tokenInfo.scope
                 );
             })
             .catch(function (err) {
-                console.log("Request failed to: " + options.method + " - " + options.url);
-                console.log("Error            : " + err.statusCode + " - " + err.response.statusMessage);
+                console.log('Request failed to: ' + options.method + ' - ' + options.url);
+                console.log('Error            : ' + err.statusCode + ' - ' + err.response.statusMessage);
                 // todo auto refresh in specific cases, issue 74
                 throw err;
             });

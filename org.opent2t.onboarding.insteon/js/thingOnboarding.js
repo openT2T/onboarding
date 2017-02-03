@@ -2,10 +2,16 @@
 var request = require('request-promise');
 var accessTokenInfo = require('./common').accessTokenInfo;
 
+function add2CurrentUTC(seconds) {
+    var t = parseInt(Math.floor(new Date().getTime() / 1000));
+    t += parseInt(seconds);
+    return t;
+}
+
 class Onboarding {
 
     onboard(authInfo) {
-        console.log("Onboarding Insteon Hub");
+        console.log('Onboarding Insteon Hub');
 
         // this comes from the onboardFlow property 
         // as part of the schema and manifest.xml
@@ -35,17 +41,18 @@ class Onboarding {
             .then(function (body) {
                 var tokenInfo = JSON.parse(body); // This includes refresh token, scope etc..
 
+                // 'expires_in is in minutes', according to http://docs.insteon.apiary.io/#reference/authorization/authorization-grant
                 return new accessTokenInfo(
                     tokenInfo.access_token,
                     tokenInfo.refresh_token,
                     authInfo[1].client_id,
                     tokenInfo.token_type,
-                    tokenInfo.expires_in
+                    add2CurrentUTC( tokenInfo.expires_in * 60 )
                 );
             })
             .catch(function (err) {
-                console.log("Request failed to: " + options.method + " - " + options.url);
-                console.log("Error            : " + err.statusCode + " - " + err.response.statusMessage);
+                console.log('Request failed to: ' + options.method + ' - ' + options.url);
+                console.log('Error            : ' + err.statusCode + ' - ' + err.response.statusMessage);
                 // todo auto refresh in specific cases, issue 74
                 throw err;
             });
