@@ -49,7 +49,7 @@ class Onboarding {
                     token: tokenInfo.access_token,
                     expiration: expiration,
                     type: tokenInfo.token_type,
-                    scopes: tokenInso.scopes
+                    scopes: tokenInfo.scopes
                 }
 
                 authTokens['refresh'] = {

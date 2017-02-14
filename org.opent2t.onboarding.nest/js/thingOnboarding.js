@@ -41,7 +41,7 @@ class Onboarding {
                     token: tokenInfo.access_token,
                     
                     // expires_in is a duration in seconds and needs to be a timestamp
-                    expiration: Math.floor((new Date().getTime() / 1000) + tokenInfo.expires_in);
+                    expiration: Math.floor((new Date().getTime() / 1000) + tokenInfo.expires_in)
                 }
                 
                 return authTokens;
