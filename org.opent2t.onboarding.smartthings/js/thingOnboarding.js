@@ -1,12 +1,5 @@
 'use strict';
 var request = require('request-promise');
-var accessTokenInfo = require('./common').accessTokenInfo;
-
-function add2CurrentUTC(seconds) {
-    var t = parseInt(Math.floor(new Date().getTime() / 1000));
-    t += parseInt(seconds);
-    return t;
-}
 
 class Onboarding {
 
@@ -41,13 +34,21 @@ class Onboarding {
         return request(options)
             .then(function (body) {
                 var tokenInfo = JSON.parse(body); // This includes refresh token, scope etc..
-                return new accessTokenInfo(
-                    tokenInfo.access_token,
-                    authInfo[0].client_id,
-                    tokenInfo.token_type,
-                    add2CurrentUTC(tokenInfo.expires_in),
-                    tokenInfo.scope
-                );
+
+                var authTokens = {};
+                authTokens['access'] = {
+                    token: tokenInfo.access_token,
+                    
+                    // Conver the TTL into a timestamp
+                    expiration: Math.floor((new Date().getTime() / 1000) + tokenInfo.expires_in),
+                    type: tokenInfo.token_type,
+                    scopes: tokenInfo.scope,
+
+                    // SmartThings requires the client_id for the endpoint URL
+                    client_id: authInfo[0].client_id
+                };
+                
+                return authTokens;
             })
             .catch(function (err) {
                 console.log('Request failed to: ' + options.method + ' - ' + options.url);

@@ -1,12 +1,5 @@
 'use strict';
 var request = require('request-promise');
-var accessTokenInfo = require('./common').accessTokenInfo;
-
-function add2CurrentUTC(seconds) {
-    var t = parseInt(Math.floor(new Date().getTime() / 1000));
-    t += parseInt(seconds);
-    return t;
-}
 
 class Onboarding {
 
@@ -41,18 +34,26 @@ class Onboarding {
             .then(function (body) {
                 var tokenInfo = JSON.parse(body); // This includes refresh token, scope etc..
 
-                // 'expires_in is in minutes', according to http://docs.insteon.apiary.io/#reference/authorization/authorization-grant
-                return new accessTokenInfo(
-                    tokenInfo.access_token,
-                    tokenInfo.refresh_token,
-                    authInfo[1].client_id,
-                    tokenInfo.token_type,
-                    add2CurrentUTC( tokenInfo.expires_in * 60 )
-                );
+                var expiration = Math.floor((new Date().getTime() / 1000) + tokenInfo.expires_in);
+
+                var authTokens = {};
+                authTokens['access'] = {
+                    token: tokenInfo.access_token,
+                    expiration: expiration, 
+                    type: tokenInfo.token_type,
+                    client_id: authInfo[1].client_id
+                };
+
+                authTokens['refresh'] = {
+                    token: tokenInfo.refresh_token,
+                    expiration: expiration
+                };
+
+                return authTokens;
             })
             .catch(function (err) {
-                console.log('Request failed to: ' + options.method + ' - ' + options.url);
-                console.log('Error            : ' + err.statusCode + ' - ' + err.response.statusMessage);
+                console.log("Request failed to: " + options.method + " - " + options.url);
+                console.log("Error            : " + err.statusCode + " - " + err.response.statusMessage);
                 // todo auto refresh in specific cases, issue 74
                 throw err;
             });

@@ -3,7 +3,6 @@
 
 'use strict';
 var request = require('request-promise');
-var accessTokenInfo = require('./common').accessTokenInfo;
 
 class Onboarding {
 
@@ -42,12 +41,25 @@ class Onboarding {
             .then(function (body) {
                 var tokenInfo = JSON.parse(body); // This includes refresh token, scope etc..
                 
-                return new accessTokenInfo(
-                    tokenInfo.access_token,
-                    tokenInfo.refresh_token,
-                    tokenInfo.token_type,
-                    tokenInfo.scopes
-                );
+                // Wink doesn't return an expiration, so set it to 24 hours
+                var expiration = Math.floor(new Date().getTime() / 1000) + 86400;
+
+                var authTokens = {};
+                authTokens['access'] = {
+                    token: tokenInfo.access_token,
+                    expiration: expiration,
+                    type: tokenInfo.token_type,
+                    scopes: tokenInfo.scopes
+                }
+
+                authTokens['refresh'] = {
+                    token: tokenInfo.refresh_token,
+                    expiration: expiration,
+                    type: tokenInfo.token_type,
+                    scopes: tokenInfo.scopes
+                };
+                
+                return authTokens;
             })
             .catch(function (err) {
                 console.log("Request failed to: " + options.method + " - " + options.url);

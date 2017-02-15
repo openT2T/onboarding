@@ -1,12 +1,5 @@
 'use strict';
 var request = require('request-promise');
-var accessTokenInfo = require('./common').accessTokenInfo;
-
-function add2CurrentUTC(seconds) {
-    var t = parseInt(Math.floor(new Date().getTime() / 1000));
-    t += parseInt(seconds);
-    return t;
-}
 
 class Onboarding {
 
@@ -38,12 +31,20 @@ class Onboarding {
 
         return request(options)
             .then(function (body) {
-                var tokenInfo = JSON.parse(body); // This includes refresh token, scope etc..
+                var tokenInfo = JSON.parse(body);
 
-                return new accessTokenInfo(
-                    tokenInfo.access_token,
-                    add2CurrentUTC(tokenInfo.expires_in)
-                );
+                // Nest does not support refresh_tokens, and instead the access token has an expiration 10 years
+                // in the future.
+
+                var authTokens = {};
+                authTokens['access'] = {
+                    token: tokenInfo.access_token,
+                    
+                    // expires_in is a duration in seconds and needs to be a timestamp
+                    expiration: Math.floor((new Date().getTime() / 1000) + tokenInfo.expires_in)
+                }
+                
+                return authTokens;
             })
             .catch(function (err) {
                 console.log('Request failed to: ' + options.method + ' - ' + options.url);
