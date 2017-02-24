@@ -1,6 +1,6 @@
 {
    "name": "opent2t-onboarding-org-opent2t-onboarding-nest",
-   "version": "0.0.1",
+   "version": "0.2.3",
    "description": "Onboarding for Nest",
    "license": "MIT",
    "main": "thingOnboarding.js",
