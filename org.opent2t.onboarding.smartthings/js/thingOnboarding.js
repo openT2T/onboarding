@@ -4,21 +4,23 @@ var request = require('request-promise');
 class Onboarding {
 
     onboard(authInfo) {
-        console.log('Onboarding Nest Hub');
+        console.log('Onboarding SmartThings Hub');
 
         // this comes from the onboardFlow property 
         // as part of the schema and manifest.xml
-        var params = 'client_id=' + authInfo[0].client_id;
-        params = params + '&code=' + authInfo[1];
-        params = params + '&client_secret=' + authInfo[0].client_secret;
-        params = params + '&grant_type=authorization_code';
+        var params = 'grant_type=authorization_code&client_id=' + authInfo[0].client_id
+                   + '&client_secret=' + authInfo[0].client_secret
+                   + '&redirect_uri=' + authInfo[0].redirect_url
+                   + '&code=' + authInfo[1]
+                   + '&scope=app';
 
         // build request URI
-        var requestUri = 'https://api.home.nest.com/oauth2/access_token?' + params;
+        var requestUri = 'https://graph.api.smartthings.com/oauth/token?' + params;
         var method = 'POST';
 
         // Set the headers
         var headers = {
+            'Accept': 'application/json',
             'cache-control': 'no-cache'
         }
 
@@ -31,18 +33,20 @@ class Onboarding {
 
         return request(options)
             .then(function (body) {
-                var tokenInfo = JSON.parse(body);
-
-                // Nest does not support refresh_tokens, and instead the access token has an expiration 10 years
-                // in the future.
+                var tokenInfo = JSON.parse(body); // This includes refresh token, scope etc..
 
                 var authTokens = {};
                 authTokens['access'] = {
                     token: tokenInfo.access_token,
                     
-                    // expires_in is a duration in seconds and needs to be a timestamp
-                    expiration: Math.floor((new Date().getTime() / 1000) + tokenInfo.expires_in)
-                }
+                    // Conver the TTL into a timestamp
+                    expiration: Math.floor((new Date().getTime() / 1000) + tokenInfo.expires_in),
+                    type: tokenInfo.token_type,
+                    scopes: tokenInfo.scope,
+
+                    // SmartThings requires the client_id for the endpoint URL
+                    client_id: authInfo[0].client_id
+                };
                 
                 return authTokens;
             })

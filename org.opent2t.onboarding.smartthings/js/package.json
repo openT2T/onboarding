@@ -1,7 +1,7 @@
 {
-   "name": "opent2t-onboarding-org-opent2t-onboarding-winkhub",
+   "name": "opent2t-onboarding-org-opent2t-onboarding-smartthings",
    "version": "0.2.0",
-   "description": "Onboarding for Wink",
+   "description": "Onboarding for SmartThings",
    "license": "MIT",
    "main": "thingOnboarding.js",
    "files": [

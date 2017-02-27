@@ -7,7 +7,7 @@ console.log("Test Config:");
 console.log(JSON.stringify(testConfig, null, 2));
 
 ///
-/// Run a series of tests to validate the translator
+/// Run a series of tests to validate Insteon onboarding
 ///
 
 // onboard
@@ -18,7 +18,7 @@ test.serial('onboard', t => {
             // TEST: translator is valid
             t.is(typeof onboarding, 'object') && t.truthy(onboarding);
 
-            return OpenT2T.invokeMethodAsync(onboarding, "org.opent2t.onboarding.hue", "onboard", [testConfig])
+            return OpenT2T.invokeMethodAsync(onboarding, "org.opent2t.onboarding.insteon", "onboard", [testConfig])
                 .then((accessToken) => {
                     console.log("accessToken:");
                     console.log(JSON.stringify(accessToken, null, 2));
