@@ -1,6 +1,3 @@
-/* jshint esversion: 6 */
-/* jshint node: true */
-
 'use strict';
 var https = require('https');
 var cryptojs_sha1 = require('crypto-js');
