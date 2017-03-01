@@ -6,7 +6,6 @@
   "main": "thingOnboarding.js",
   "files": [
     "thingOnboarding.js",
-    "common.js",
     "package.json"
   ],
   "repository": {
@@ -18,10 +17,10 @@
   },
   "homepage": "https://github.com/openT2T/onboarding#readme",
   "dependencies": {
-    "opent2t": "^1.0.1",
+    "opent2t": "^1.0.3",
     "q": "^1.4.1"
   },
   "devDependencies": {
-    "ava": "^0.15.2"
+    "ava": "^0.18.2"
   }
 }

@@ -103,7 +103,7 @@ class Onboarding {
                             relayServer: deviceInfo.Server_Relay,
                             refreshToken: this.sha1Password,
                             username: this.username,
-							pkDevice: this.pkDevice,
+                            pkDevice: this.pkDevice,
                             // this is for local/proximal access
                             internalIP: deviceInfo.InternalIP,
                             port: deviceInfo.AccessiblePort
