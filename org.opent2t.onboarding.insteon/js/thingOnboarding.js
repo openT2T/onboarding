@@ -1,6 +1,8 @@
 'use strict';
 var request = require('request-promise');
 var OpenT2TLogger = require('opent2t').Logger;
+var OpenT2TError = require('opent2t').OpenT2TError;
+var OpenT2TConstants = require('opent2t').OpenT2TConstants;
 
 class Onboarding {
     constructor(logLevel = "info") { 
@@ -8,6 +10,11 @@ class Onboarding {
     }
     
     onboard(authInfo) {
+        // Ensure getUserInput and getDeveloperInput answers are present
+        if (!authInfo || authInfo.length < 2) {
+            throw new OpenT2TError(401, OpenT2TConstants.InvalidAuthInput);
+        }
+        
         this.ConsoleLogger.info('Onboarding Insteon Hub');
 
         // this comes from the onboardFlow property 
@@ -54,12 +61,6 @@ class Onboarding {
                 };
 
                 return authTokens;
-            })
-            .catch(function (err) {
-                this.ConsoleLogger.error(`Request failed to: ${options.method}- ${options.url}`);
-                this.ConsoleLogger.error(`Error : ${err.statusCode} - ${err.response.statusMessage}`);
-                // todo auto refresh in specific cases, issue 74
-                request.reject(err);
             });
     }
 }
