@@ -3,11 +3,15 @@
 
 'use strict';
 var request = require('request-promise');
+var OpenT2TLogger = require('opent2t').Logger;
 
-class Onboarding {
-
+class Onboarding { 
+    constructor(logLevel = "info") {
+        this.ConsoleLogger = new OpenT2TLogger(logLevel);
+    }
+   
     onboard(authInfo) {
-        console.log("Onboarding Wink Hub");
+        this.ConsoleLogger.verbose("Onboarding Wink Hub");
 
         // this comes from the onboardFlow property 
         // as part of the schema and manifest.xml
@@ -62,10 +66,10 @@ class Onboarding {
                 return authTokens;
             })
             .catch(function (err) {
-                console.log("Request failed to: " + options.method + " - " + options.url);
-                console.log("Error            : " + err.statusCode + " - " + err.response.statusMessage);
+                this.ConsoleLogger.error(`Request failed to: ${options.method}- ${options.url}`);
+                this.ConsoleLogger.error(`Error : ${err.statusCode} - ${err.response.statusMessage}`);
                 // todo auto refresh in specific cases, issue 74
-                throw err;
+                request.reject(err);
             });
     }
 }

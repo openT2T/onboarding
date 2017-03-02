@@ -3,16 +3,18 @@
 var https = require('https');
 var cryptojs_sha1 = require('crypto-js');
 var q = require('q');
+var OpenT2TLogger = require('opent2t').Logger;
+var ConsoleLogger = new OpenT2TLogger("info");
 
 function logError(error) {
-    console.log("[VeraHub] Error!");
+    ConsoleLogger.error("[VeraHub] Error!");
     if (error.statusMessage) {
-        console.log("[VeraHub] HTTP Error: " + error.statusCode + " - " + error.statusMessage);
-        console.log("[VeraHub] HTTP Headers: ");
-        console.log(error.headers);
+        ConsoleLogger.error("[VeraHub] HTTP Error: " + error.statusCode + " - " + error.statusMessage);
+        ConsoleLogger.error("[VeraHub] HTTP Headers: ");
+        ConsoleLogger.error(error.headers);
     }
     else {
-        console.log(error);
+        ConsoleLogger.error(error);
     }
 }
 
@@ -55,12 +57,11 @@ var internal =
     },
 
     makeVeraRequest : function (url, path, sessionToken, keepAlive, mmsInfo, returnRawBody) {
-        console.log("[VeraHub] -------------------------")
-        console.log("[VeraHub] makeVeraRequest: " + url)
-        console.log("[VeraHub] path           : " + path);
-        console.log("[VeraHub] sessionToken   : " + sessionToken);
-        console.log("[VeraHub] keepAlive      : " + keepAlive);
-        console.log("[VeraHub] mmsInfo        : " + mmsInfo);
+        ConsoleLogger.verbose("[VeraHub] makeVeraRequest: " + url)
+        ConsoleLogger.verbose("[VeraHub] path           : " + path);
+        ConsoleLogger.verbose("[VeraHub] sessionToken   : " + sessionToken);
+        ConsoleLogger.verbose("[VeraHub] keepAlive      : " + keepAlive);
+        ConsoleLogger.verbose("[VeraHub] mmsInfo        : " + mmsInfo);
 
         var deferred = q.defer();
 
@@ -237,7 +238,7 @@ module.exports =  {
 
     printDevices: function (devices) {
         devices.forEach(function(device) {
-            console.log(device.name + " (" + device.id + ") - " + device.device_type);
+           ConsoleLogger.info(device.name + " (" + device.id + ") - " + device.device_type);
         });
     }
 };
