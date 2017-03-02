@@ -67,7 +67,7 @@ class Onboarding {
             })
             .catch(function (err) {
                 this.ConsoleLogger.error(`Request failed to: ${options.method}- ${options.url}`);
-                this.ConsoleLogger.error(`"Error            : ${err.statusCode} - ${err.response.statusMessage}`);
+                this.ConsoleLogger.error(`Error : ${err.statusCode} - ${err.response.statusMessage}`);
                 // todo auto refresh in specific cases, issue 74
                 request.reject(err);
             });
