@@ -1,0 +1,26 @@
+{
+  "name": "opent2t-onboarding-org-opent2t-onboarding-contosohub",
+  "version": "0.0.2",
+  "description": "Onboarding for ContosoThings",
+  "license": "MIT",
+  "main": "thingOnboarding.js",
+  "files": [
+    "thingOnboarding.js",
+    "package.json"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "githttps://github.com/openT2T/onboarding.git"
+  },
+  "bugs": {
+    "url": "https://github.com/openT2T/onboarding/issues"
+  },
+  "homepage": "https://github.com/openT2T/onboarding#readme",
+  "dependencies": {
+    "opent2t": "^1.0.3",
+    "q": "^1.4.1"
+  },
+  "devDependencies": {
+    "ava": "^0.18.2"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "name": "opent2t-onboarding-org-opent2t-onboarding-getverahub",
+  "version": "0.0.1",
+  "description": "Onboarding for Vera",
+  "license": "MIT",
+  "main": "thingOnboarding.js",
+  "files": [
+    "thingOnboarding.js",
+    "package.json"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "githttps://github.com/openT2T/onboarding.git"
+  },
+  "bugs": {
+    "url": "https://github.com/openT2T/onboarding/issues"
+  },
+  "homepage": "https://github.com/openT2T/onboarding#readme",
+  "dependencies": {
+    "crypto-js": "^3.1.6",
+    "https": "^1.0.0",
+    "opent2t": "^1.0.3",
+    "request": "^2.74.0",
+    "request-promise": "^4.1.1"
+  },
+  "devDependencies": {
+    "ava": "^0.18.2"
+  }
+}
