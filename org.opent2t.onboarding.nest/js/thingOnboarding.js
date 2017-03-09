@@ -1,5 +1,7 @@
 'use strict';
 var request = require('request-promise');
+var url = require('url');
+var querystring = require('querystring');
 var OpenT2TLogger = require('opent2t').Logger;
 var OpenT2TError = require('opent2t').OpenT2TError;
 var OpenT2TConstants = require('opent2t').OpenT2TConstants;
@@ -7,25 +9,32 @@ var OpenT2TConstants = require('opent2t').OpenT2TConstants;
 class Onboarding {
     constructor(logLevel = "info") { 
         this.ConsoleLogger = new OpenT2TLogger(logLevel);
+        this.authUrl = 'https://api.home.nest.com/oauth2';
+        this.permissionsUrl = 'https://home.nest.com/login/oauth2';
     }
 
     onboard(authInfo) {
-        // Ensure getUserInput and getDeveloperInput answers are present
+        // Ensure getDeveloperInput and getUserPermissions answers are present
         if (!authInfo || authInfo.length < 2) {
             throw new OpenT2TError(401, OpenT2TConstants.InvalidAuthInput);
         }
         
         this.ConsoleLogger.info('Onboarding Nest Hub');
 
+        // Parse authInfo[1] to get the query parameters, Nest wants 'code'
+        var code = url.parse(authInfo[1], true).query['code'];
+
         // this comes from the onboardFlow property 
         // as part of the schema and manifest.xml
-        var params = 'client_id=' + authInfo[0].client_id;
-        params = params + '&code=' + authInfo[1];
-        params = params + '&client_secret=' + authInfo[0].client_secret;
-        params = params + '&grant_type=authorization_code';
+        var params = {
+            client_id: authInfo[0].client_id,
+            client_secret: authInfo[0].client_secret,
+            code: code,
+            grant_type: 'authorization_code'
+        }
 
         // build request URI
-        var requestUri = 'https://api.home.nest.com/oauth2/access_token?' + params;
+        var requestUri = this.authUrl + '/access_token?' + querystring.stringify(params);
         var method = 'POST';
 
         // Set the headers
@@ -57,6 +66,27 @@ class Onboarding {
                 
                 return authTokens;
             });
+    }
+
+    /**
+     * Gets the user permission URL for authorizing this app on the users account.
+     * The URL will be built with other answers from the onboarding flow.
+     */
+    getUserVerificationUri(authInfo) {
+        var parameters = {
+            client_id: authInfo[0].client_id,
+        };
+
+        // State will be passed back to the redirect_url unchanged, allowing an app
+        // to differentiate between different users/sessions.
+        if (authInfo[0].state) {
+            parameters.state = authInfo[0].state;
+        }
+
+        // Automatically encode/escape any of the parameters for use in the URL
+        let fullUrl = this.permissionsUrl + '?' + querystring.stringify(parameters);
+
+        return Promise.resolve(fullUrl);
     }
 }
 
