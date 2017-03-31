@@ -2,13 +2,12 @@
 var request = require('request-promise');
 var url = require('url');
 var querystring = require('querystring');
-var OpenT2TLogger = require('opent2t').Logger;
 var OpenT2TError = require('opent2t').OpenT2TError;
 var OpenT2TConstants = require('opent2t').OpenT2TConstants;
 
 class Onboarding {
-    constructor(logLevel = "info") { 
-        this.ConsoleLogger = new OpenT2TLogger(logLevel);
+    constructor(logger) { 
+        this.logger = logger;
         this.authUrl = 'https://api.home.nest.com/oauth2';
         this.permissionsUrl = 'https://home.nest.com/login/oauth2';
     }
@@ -19,7 +18,7 @@ class Onboarding {
             throw new OpenT2TError(401, OpenT2TConstants.InvalidAuthInput);
         }
         
-        this.ConsoleLogger.info('Onboarding Nest Hub');
+        this.logger.info('Onboarding Nest Hub');
 
         // Parse authInfo[1] to get the query parameters, Nest wants 'code'
         var code = url.parse(authInfo[1], true).query['code'];

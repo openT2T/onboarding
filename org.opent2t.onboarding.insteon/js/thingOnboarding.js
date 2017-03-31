@@ -1,12 +1,11 @@
 'use strict';
 var request = require('request-promise');
-var OpenT2TLogger = require('opent2t').Logger;
 var OpenT2TError = require('opent2t').OpenT2TError;
 var OpenT2TConstants = require('opent2t').OpenT2TConstants;
 
 class Onboarding {
-    constructor(logLevel = "info") { 
-        this.ConsoleLogger = new OpenT2TLogger(logLevel);
+    constructor(logger) { 
+        this.logger = logger;
     }
     
     onboard(authInfo) {
@@ -15,7 +14,7 @@ class Onboarding {
             throw new OpenT2TError(401, OpenT2TConstants.InvalidAuthInput);
         }
         
-        this.ConsoleLogger.info('Onboarding Insteon Hub');
+        this.logger.info('Onboarding Insteon Hub');
 
         // this comes from the onboardFlow property 
         // as part of the schema and manifest.xml
