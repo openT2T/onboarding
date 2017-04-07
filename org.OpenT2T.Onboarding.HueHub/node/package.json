@@ -1,6 +1,6 @@
 {
   "name": "opent2t-onboarding-huehub",
-  "version": "1.0.1",
+  "version": "0.3.0",
   "dependencies": {
     "inquirer": "^0.12.0",
     "json-stringify-safe": "^5.0.1",
