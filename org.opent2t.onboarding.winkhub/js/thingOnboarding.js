@@ -53,6 +53,8 @@ class Onboarding {
                 
                 // Wink doesn't return an expiration, so set it to 24 hours
                 var expiration = Math.floor(new Date().getTime() / 1000) + 86400;
+                // default to one year in seconds
+                var refreshExpiration = Math.floor(new Date().getTime() / 1000) + 31557600;
 
                 var authTokens = {};
                 authTokens['access'] = {
@@ -64,7 +66,7 @@ class Onboarding {
 
                 authTokens['refresh'] = {
                     token: tokenInfo.refresh_token,
-                    expiration: expiration,
+                    expiration: refreshExpiration,
                     type: tokenInfo.token_type,
                     scopes: tokenInfo.scopes
                 };
