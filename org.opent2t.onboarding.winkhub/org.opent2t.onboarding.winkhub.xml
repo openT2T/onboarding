@@ -7,10 +7,9 @@
              These input parameters are unique to a particular device type that supports this onboarding type,
              e.g. auth URLs, RF bands, regular expressions to find the device on a common bus, etc. -->
         <method name="onboard">
-            <arg name="username" type="s" direction="in" />
-            <arg name="password" type="u" direction="in" />
             <arg name="client_id" type="s" direction="in" />
             <arg name="client_secret" type="s" direction="in"/>
+            <arg name="access_code" type="s" direction="in"/>
         </method>
     </interface>
 </node>

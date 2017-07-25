@@ -3,12 +3,15 @@
 
 'use strict';
 var request = require('request-promise');
+var url = require('url');
+var querystring = require('querystring');
 var OpenT2TError = require('opent2t').OpenT2TError;
 var OpenT2TConstants = require('opent2t').OpenT2TConstants;
 
 class Onboarding { 
     constructor(logger) {
         this.logger = logger;
+		this.authUrl = 'https://api.wink.com/oauth2';
     }
    
     onboard(authInfo) {
@@ -19,31 +22,33 @@ class Onboarding {
 
         this.logger.verbose("Onboarding Wink Hub");
 
+        // Parse authInfo[1] to get the query parameters, Wink wants 'code'
+        var code = url.parse(authInfo[1], true).query['code'];
+		
         // this comes from the onboardFlow property 
         // as part of the schema and manifest.xml
-        var postData = JSON.stringify({
-            'client_id': authInfo[1].client_id,
-            'client_secret': authInfo[1].client_secret,
-            'username': authInfo[0].username,
-            'password': authInfo[0].password,
-            'grant_type': 'password'
-        });
+        var params = {
+            client_id: authInfo[0].client_id,
+            client_secret: authInfo[0].client_secret,
+            redirect_uri: authInfo[0].redirect_url,
+            code: code,
+            grant_type: 'authorization_code'
+        }
 
         // build request URI
-        var requestUri = "https://api.wink.com/oauth2/token";
+        var requestUri = this.authUrl + '/token?' + querystring.stringify(params);
         var method = "POST";
 
         // Set the headers
         var headers = {
-            'Content-Type': 'application/json',
-            'Content-Length': postData.length
+            'Accept': 'application/json',
+            'cache-control': 'no-cache'
         }
 
         var options = {
             url: requestUri,
             method: method,
             headers: headers,
-            body: postData,
             followAllRedirects: true
         };
 
@@ -73,6 +78,25 @@ class Onboarding {
                 
                 return authTokens;
             });
+    }
+	
+	/**
+     * Gets the verification URI for the user to visit, and connect the client_id
+     * with their account, as per oAuth2
+     */
+    getUserVerificationUri(authInfo) {
+        var parameters = {
+            client_id: authInfo[0].client_id,
+            redirect_uri: authInfo[0].redirect_url,
+            scope: 'app',
+            response_type: 'code'
+        };
+
+        // Automatically encode/escape any of the parameters for use in the URL
+        let fullUrl = this.authUrl + '/authorize?' + querystring.stringify(parameters);
+
+        return Promise.resolve(fullUrl);
+    
     }
 }
 
