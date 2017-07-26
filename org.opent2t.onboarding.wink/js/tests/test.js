@@ -21,7 +21,7 @@ test.serial('onboard', t => {
             // TEST: translator is valid
             t.is(typeof onboarding, 'object') && t.truthy(onboarding);
 
-            return opent2t.invokeMethodAsync(onboarding, "org.opent2t.onboarding.winkhub", "onboard", [testConfig])
+            return opent2t.invokeMethodAsync(onboarding, "org.opent2t.onboarding.wink", "onboard", [testConfig])
                 .then((accessToken) => {
                     console.log("accessToken:");
                     console.log(JSON.stringify(accessToken, null, 2));
