@@ -1,43 +1,51 @@
 'use strict';
 var request = require('request-promise');
+var url = require('url');
+var querystring = require('querystring');
 var OpenT2TError = require('opent2t').OpenT2TError;
 var OpenT2TConstants = require('opent2t').OpenT2TConstants;
 
 class Onboarding {
-    constructor(logger) { 
+    constructor(logger) {
         this.logger = logger;
+        this.authUrl = 'https://connect.insteon.com/api/v2/oauth2';
     }
-    
+
     onboard(authInfo) {
         // Ensure getUserInput and getDeveloperInput answers are present
         if (!authInfo || authInfo.length < 2) {
             throw new OpenT2TError(401, OpenT2TConstants.InvalidAuthInput);
         }
-        
+
         this.logger.info('Onboarding Insteon Hub');
 
-        // this comes from the onboardFlow property 
+         // Parse authInfo[1] to get the query parameters, Insteon wants 'code'
+        var code = url.parse(authInfo[1], true).query['code'];
+
+        // this comes from the onboardFlow property
         // as part of the schema and manifest.xml
-        var postData = JSON.stringify({
-            'client_id': authInfo[1].client_id,
-            'username': authInfo[0].username,
-            'password': authInfo[0].password,
-            'grant_type': 'password'
-        });
+        var params = {
+            client_id: authInfo[0].client_id,
+            client_secret: authInfo[0].client_secret,
+            redirect_uri: authInfo[0].redirect_url,
+            code: code,
+            grant_type: 'authorization_code'
+        }
+
+        // build request URI
+        var requestUri = this.authUrl + '/token';
+        var method = "POST";
 
         // Set the headers
         var headers = {
-            'Content-Type': 'application/json',
-            'Content-Length': postData.length,
-            'Accept': 'application/json'
+            'Content-Type': 'application/x-www-form-urlencoded'
         }
 
         var options = {
-            url: 'https://connect.insteon.com/api/v2/oauth2/token',
-            method: 'POST',
+            url: requestUri,
+            method: method,
             headers: headers,
-            body: postData,
-            followAllRedirects: true
+            body: querystring.stringify(params)
         };
 
         return request(options)
@@ -49,9 +57,9 @@ class Onboarding {
                 var authTokens = {};
                 authTokens['access'] = {
                     token: tokenInfo.access_token,
-                    expiration: expiration, 
+                    expiration: expiration,
                     type: tokenInfo.token_type,
-                    client_id: authInfo[1].client_id
+                    client_id: authInfo[0].client_id
                 };
 
                 authTokens['refresh'] = {
@@ -61,6 +69,24 @@ class Onboarding {
 
                 return authTokens;
             });
+    }
+
+    /**
+     * Gets the verification URI for the user to visit, and connect the client_id
+     * with their account, as per oAuth2
+     */
+    getUserVerificationUri(authInfo) {
+        var parameters = {
+            client_id: authInfo[0].client_id,
+            redirect_uri: authInfo[0].redirect_url,
+            scope: 'app',
+            response_type: 'code'
+        };
+
+        // Automatically encode/escape any of the parameters for use in the URL
+        let fullUrl = this.authUrl + '/auth?' + querystring.stringify(parameters);
+
+        return Promise.resolve(fullUrl);
     }
 }
 
